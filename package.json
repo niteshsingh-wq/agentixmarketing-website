@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "payload migrate:create --name initial && payload migrate && next build",
+    "build": "payload migrate && next build",
     "build:local": "NEXT_CPU_COUNT=1 NEXT_TELEMETRY_DISABLED=1 next build --webpack",
     "start": "node server.js",
     "start:next": "next start",
