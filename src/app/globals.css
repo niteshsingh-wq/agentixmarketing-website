@@ -326,6 +326,51 @@ body {
   border-bottom: 1px solid var(--line);
 }
 .drawer a:active { color: var(--blue); }
+/* Primary nav links */
+.drawer-primary {
+  font-size: 28px !important;
+  font-weight: 600 !important;
+  padding: 13px 0 !important;
+  border-bottom: 1px solid var(--line) !important;
+  letter-spacing: -0.02em;
+}
+/* Divider between primary links and service accordion */
+.drawer-divider {
+  border-top: 1px solid var(--ink-line);
+  margin: 8px 0;
+  opacity: 0.4;
+}
+/* Accordion sections */
+.drawer-accord { border-bottom: 1px solid var(--line); }
+.drawer-accord-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--fg);
+  font-size: 17px;
+  font-weight: 500;
+  padding: 16px 0;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  opacity: 0.72;
+}
+.drawer-accord-hd svg { transition: transform 0.25s; flex-shrink: 0; }
+.drawer-accord-hd.open svg { transform: rotate(180deg); }
+.drawer-accord-hd.open { opacity: 1; color: var(--blue); }
+.drawer-accord-bd { padding-bottom: 12px; display: flex; flex-direction: column; gap: 16px; }
+.drawer-accord-grp { display: flex; flex-direction: column; }
+.drawer-accord-lbl {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  font-weight: 500;
+  padding: 4px 0 6px;
+  border: none !important;
+}
 .drawer-grp { padding: 8px 0 4px; }
 .drawer-grp h5 {
   font-size: 11px;
@@ -335,11 +380,12 @@ body {
   font-weight: 500;
   margin-bottom: 4px;
 }
-.drawer-grp .drawer-sub {
-  font-size: 19px;
+.drawer-grp .drawer-sub,
+.drawer-sub {
+  font-size: 15px !important;
   font-weight: 500;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 8px 0 !important;
+  border-bottom: 1px solid var(--line) !important;
   opacity: 0.82;
 }
 .drawer .drawer-foot { margin-top: auto; padding-top: 28px; }

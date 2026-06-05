@@ -29,7 +29,7 @@ function HeroStats() {
 }
 
 function HeroLeadForm() {
-  const [d, setD] = useState({ name: '', email: '', website: '', interest: 'Shopify build' })
+  const [d, setD] = useState({ name: '', email: '', website: '', goal: 'Shopify build' })
   const [sent, setSent] = useState(false)
   const set = (k: string, v: string) => setD(s => ({ ...s, [k]: v }))
   const valid = d.name.trim() !== '' && /\S+@\S+\.\S+/.test(d.email)
@@ -82,7 +82,7 @@ function HeroLeadForm() {
       </div>
       <div className="field">
         <label>What do you need?</label>
-        <select value={d.interest} onChange={e => set('interest', e.target.value)}>
+        <select value={d.goal} onChange={e => set('goal', e.target.value)}>
           <option>Shopify build</option>
           <option>SEO &amp; visibility</option>
           <option>Conversion (CRO)</option>

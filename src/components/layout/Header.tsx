@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Arrow, Chevron } from '@/components/ui/Arrow'
 import { useLeadModal } from '@/components/lead/LeadContext'
@@ -46,6 +46,8 @@ export function Header() {
   const { openLead } = useLeadModal()
   const [scrolled, setScrolled] = useState(false)
   const [drawer, setDrawer] = useState(false)
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null)
+  const toggleAccordion = (key: string) => setOpenAccordion(v => v === key ? null : key)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -108,19 +110,47 @@ export function Header() {
       </header>
 
       <div className={'drawer theme-dark' + (drawer ? ' open' : '')}>
-        {(Object.keys(MEGA) as (keyof typeof MEGA)[]).map(cat => (
-          <div className="drawer-grp" key={cat}>
-            <h5>{cat}</h5>
-            {(MEGA[cat] as any[]).flatMap(([, items]: [string, [string, string][]]) => items).map(([slug, name]: [string, string]) => (
-              <Link key={slug} href={`/services/${slug}`} className="drawer-sub" onClick={() => setDrawer(false)}>{name}</Link>
-            ))}
-          </div>
-        ))}
-        <Link href="/case-studies" onClick={() => setDrawer(false)}>Case Studies</Link>
-        <Link href="/results" onClick={() => setDrawer(false)}>Results</Link>
-        <Link href="/about" onClick={() => setDrawer(false)}>About</Link>
-        <Link href="/contact" onClick={() => setDrawer(false)}>Contact</Link>
-        <Link href="/careers" onClick={() => setDrawer(false)}>Careers</Link>
+        {/* Primary nav links — always visible at top */}
+        <Link className="drawer-primary" href="/case-studies" onClick={() => setDrawer(false)}>Case Studies</Link>
+        <Link className="drawer-primary" href="/results" onClick={() => setDrawer(false)}>Results</Link>
+        <Link className="drawer-primary" href="/about" onClick={() => setDrawer(false)}>About</Link>
+        <Link className="drawer-primary" href="/contact" onClick={() => setDrawer(false)}>Contact</Link>
+        <Link className="drawer-primary" href="/careers" onClick={() => setDrawer(false)}>Careers</Link>
+
+        <div className="drawer-divider" />
+
+        {/* Service categories as accordion */}
+        {(Object.keys(MEGA) as (keyof typeof MEGA)[]).map(cat => {
+          const isOpen = openAccordion === cat
+          const allItems = (MEGA[cat] as any[]).flatMap(([, items]: [string, [string, string][]]) => items)
+          return (
+            <div className="drawer-accord" key={cat}>
+              <button
+                className={'drawer-accord-hd' + (isOpen ? ' open' : '')}
+                onClick={() => toggleAccordion(cat)}
+                aria-expanded={isOpen}
+              >
+                {cat}
+                <Chevron />
+              </button>
+              {isOpen && (
+                <div className="drawer-accord-bd">
+                  {(MEGA[cat] as any[]).map(([label, items]: [string, [string, string, string?][]]) => (
+                    <div key={label} className="drawer-accord-grp">
+                      <span className="drawer-accord-lbl">{label}</span>
+                      {items.map(([slug, name, tag]) => (
+                        <Link key={slug} href={`/services/${slug}`} className="drawer-sub" onClick={() => setDrawer(false)}>
+                          {name}{tag && <span className="tag">{tag}</span>}
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+        })}
+
         <div className="drawer-foot">
           <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}
             onClick={() => { setDrawer(false); openLead('form') }}>
