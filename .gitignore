@@ -34,6 +34,11 @@ npm-debug.log*
 yarn-debug.log*
 *.pnpm-debug.log*
 
+# SQLite database (lives on server, never commit)
+*.db
+*.db-shm
+*.db-wal
+
 # media uploads (server-side only)
 /media
 

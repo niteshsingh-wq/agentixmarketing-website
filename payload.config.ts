@@ -1,5 +1,5 @@
 import { buildConfig } from 'payload'
-import { postgresAdapter } from '@payloadcms/db-postgres'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { Services } from './src/payload/collections/Services'
 import { CaseStudies } from './src/payload/collections/CaseStudies'
@@ -16,13 +16,11 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     theme: 'dark',
-
-    // Suppress React hydration warnings caused by Date/locale SSR differences
     suppressHydrationWarning: true,
 
     meta: {
-      titleSuffix: '— Agentix',
-      description: 'Agentix CMS — manage leads, content and collections.',
+      titleSuffix: '— Agentix Marketing',
+      description: 'Agentix Marketing CMS — manage leads, content and collections.',
     },
 
     components: {
@@ -38,23 +36,22 @@ export default buildConfig({
   },
 
   collections: [
-    // CRM pipeline
     Leads,
     ContactSubmissions,
-    // Content
     BlogPosts,
     Testimonials,
-    // Site content (reference overrides)
     Services,
     CaseStudies,
-    // Assets & users
     Media,
     Users,
   ],
 
-  db: postgresAdapter({
-    pool: { connectionString: process.env.DATABASE_URL },
-    push: false,
+  // SQLite — single file database, no external server needed
+  // Works on any Node.js hosting including Hostinger shared hosting
+  db: sqliteAdapter({
+    client: {
+      url: process.env.DATABASE_URL || 'file:./agentix.db',
+    },
   }),
 
   editor: lexicalEditor({}),
