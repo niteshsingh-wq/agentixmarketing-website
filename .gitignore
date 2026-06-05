@@ -1,8 +1,11 @@
 # dependencies
 /node_modules
 
-# next.js
-/.next/
+# next.js — .next IS committed (pre-built for Hostinger)
+/.next/cache/
+/.next/dev/
+/.next/trace
+/.next/trace-build
 /out/
 /build
 

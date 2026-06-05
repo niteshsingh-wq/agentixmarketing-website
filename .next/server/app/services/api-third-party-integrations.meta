@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(site)/layout,_N_T_/(site)/services/layout,_N_T_/(site)/services/[slug]/layout,_N_T_/(site)/services/[slug]/page,_N_T_/services/api-third-party-integrations"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KHNpdGUp/services/$d$slug/__PAGE__",
+    "/!KHNpdGUp/services/$d$slug",
+    "/!KHNpdGUp/services",
+    "/!KHNpdGUp",
+    "/_index",
+    "/_head"
+  ]
+}
