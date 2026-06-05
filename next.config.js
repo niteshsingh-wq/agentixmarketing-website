@@ -3,7 +3,9 @@ const path = require('path')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 'standalone' is for Docker/VPS — removed for Vercel
+  turbopack: {
+    root: __dirname,
+  },
   poweredByHeader: false,
   compress: true,
   images: {
