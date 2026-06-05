@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 import { Arrow } from '@/components/ui/Arrow'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { AGENTIX_CONTENT } from '@/data/content'
@@ -22,13 +23,13 @@ function ExplorerGroup({ group }: { group: ServiceGroup }) {
         ))}
       </div>
       <div className="svc-ex-panel" key={tab}>
-        {active.items.map(([title, tag, desc], i) => (
-          <div className="svc-ex-card" key={i}>
-            <Arrow s={18} />
+        {active.items.map(([title, tag, desc, slug], i) => (
+          <Link key={i} href={`/services/${slug}`} className="svc-ex-card">
+            <Arrow s={18} className="sx-arrow" />
             <span className="sx-tag">{tag}</span>
             <h4>{title}</h4>
             <p>{desc}</p>
-          </div>
+          </Link>
         ))}
       </div>
     </RevealWrapper>

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Arrow } from '@/components/ui/Arrow'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { AGENTIX_CONTENT } from '@/data/content'
@@ -17,10 +18,12 @@ export function CapabilityColumns() {
         </RevealWrapper>
 
         <div className="cap-cols">
-          {C.map(([name, desc], i) => (
-            <RevealWrapper key={i} className="cap-col">
-              <h3>{name} <Arrow s={20} /></h3>
-              <p>{desc}</p>
+          {C.map(([name, desc, slug], i) => (
+            <RevealWrapper key={i}>
+              <Link href={`/services/${slug}`} className="cap-col">
+                <h3>{name} <Arrow s={20} /></h3>
+                <p>{desc}</p>
+              </Link>
             </RevealWrapper>
           ))}
         </div>

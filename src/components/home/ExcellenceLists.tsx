@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { AGENTIX_CONTENT } from '@/data/content'
 
@@ -19,9 +20,10 @@ export function ExcellenceLists() {
             <RevealWrapper key={i} className="excel-col">
               <h5>{title}</h5>
               <ul>
-                {items.map((it, j) => (
+                {items.map(([name, slug], j) => (
                   <li key={j}>
-                    <span>{String(j + 1).padStart(2, '0')}</span>{it}
+                    <span>{String(j + 1).padStart(2, '0')}</span>
+                    <Link href={`/services/${slug}`}>{name}</Link>
                   </li>
                 ))}
               </ul>
