@@ -25,13 +25,6 @@
     "sass": "^1.100.0",
     "sharp": "^0.33.5"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "esbuild",
-      "sharp"
-    ]
-  },
   "devDependencies": {
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.0",
