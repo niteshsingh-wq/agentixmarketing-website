@@ -25,7 +25,7 @@ function ExplorerGroup({ group }: { group: ServiceGroup }) {
       <div className="svc-ex-panel" key={tab}>
         {active.items.map(([title, tag, desc, slug], i) => (
           <Link key={i} href={`/services/${slug}`} className="svc-ex-card">
-            <Arrow s={18} className="sx-arrow" />
+            <span className="sx-arrow"><Arrow s={18} /></span>
             <span className="sx-tag">{tag}</span>
             <h4>{title}</h4>
             <p>{desc}</p>
