@@ -218,7 +218,7 @@ body {
 }
 .nav-link:hover { color: var(--blue); }
 .nav-link svg { width: 14px; height: 14px; transition: transform 0.3s; }
-.nav-item:hover .nav-link svg { transform: rotate(180deg); }
+.nav-item--open .nav-link svg { transform: rotate(180deg); }
 .mega {
   position: absolute;
   top: calc(100% + 10px);
@@ -237,7 +237,7 @@ body {
   transition: opacity 0.3s, transform 0.3s;
   box-shadow: 0 30px 80px -30px rgba(0,0,0,0.6);
 }
-.nav-item:hover .mega { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+.mega--open { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
 .mega h5 {
   font-size: 11px;
   letter-spacing: 0.14em;

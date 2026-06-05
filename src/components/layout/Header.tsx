@@ -47,7 +47,10 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [drawer, setDrawer] = useState(false)
   const [openAccordion, setOpenAccordion] = useState<string | null>(null)
+  const [openMega, setOpenMega] = useState<string | null>(null)
+  const navRef = useRef<HTMLElement>(null)
   const toggleAccordion = (key: string) => setOpenAccordion(v => v === key ? null : key)
+  const toggleMega = (key: string) => setOpenMega(v => v === key ? null : key)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -61,6 +64,20 @@ export function Header() {
     return () => { document.body.style.overflow = '' }
   }, [drawer])
 
+  useEffect(() => {
+    if (!openMega) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpenMega(null) }
+    const onClick = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenMega(null)
+    }
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('mousedown', onClick)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('mousedown', onClick)
+    }
+  }, [openMega])
+
   return (
     <>
       <header className={'hdr theme-dark' + (scrolled ? ' scrolled' : '')} style={{ backgroundColor: 'rgba(10,10,11,0)' }}>
@@ -70,28 +87,33 @@ export function Header() {
               <img src="/agentix-logo.png" alt="Agentix Marketing" style={{ width: 26, height: 26, objectFit: "contain", flexShrink: 0 }} /> Agentix Marketing
             </Link>
 
-            <nav className="nav">
-              {(Object.keys(MEGA) as (keyof typeof MEGA)[]).map(cat => (
-                <div className="nav-item" key={cat}>
-                  <button className="nav-link">{cat} <Chevron /></button>
-                  <div className="mega">
-                    {(MEGA[cat] as any[]).map(([label, items]: [string, [string, string, string?][]]) => (
-                      <div key={label}>
-                        <h5>{label}</h5>
-                        <ul>
-                          {items.map(([slug, name, tag]) => (
-                            <li key={slug}>
-                              <Link href={`/services/${slug}`}>
-                                {name}{tag && <span className="tag">{tag}</span>}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+            <nav className="nav" ref={navRef}>
+              {(Object.keys(MEGA) as (keyof typeof MEGA)[]).map(cat => {
+                const isOpen = openMega === cat
+                return (
+                  <div className={'nav-item' + (isOpen ? ' nav-item--open' : '')} key={cat}>
+                    <button className="nav-link" onClick={() => toggleMega(cat)} aria-expanded={isOpen}>
+                      {cat} <Chevron />
+                    </button>
+                    <div className={'mega' + (isOpen ? ' mega--open' : '')}>
+                      {(MEGA[cat] as any[]).map(([label, items]: [string, [string, string, string?][]]) => (
+                        <div key={label}>
+                          <h5>{label}</h5>
+                          <ul>
+                            {items.map(([slug, name, tag]) => (
+                              <li key={slug}>
+                                <Link href={`/services/${slug}`} onClick={() => setOpenMega(null)}>
+                                  {name}{tag && <span className="tag">{tag}</span>}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
               <div className="nav-item"><Link className="nav-link" href="/case-studies">Case Studies</Link></div>
               <div className="nav-item"><Link className="nav-link" href="/results">Results</Link></div>
               <div className="nav-item"><Link className="nav-link" href="/about">About</Link></div>
