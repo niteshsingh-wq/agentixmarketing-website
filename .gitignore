@@ -19,7 +19,6 @@
 .DS_Store
 *.pem
 .vercel
-.npmrc
 
 # typescript
 *.tsbuildinfo
