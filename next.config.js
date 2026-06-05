@@ -3,15 +3,16 @@ const path = require('path')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // 'standalone' is for Docker/VPS — removed for Vercel
   poweredByHeader: false,
   compress: true,
   images: {
     formats: ['image/avif', 'image/webp'],
-    domains: ['agentixmarketing.com'],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'agentixmarketing.com' },
+    ],
   },
   webpack(config) {
-    // Ensure @payload-config resolves to the root payload.config.ts
     config.resolve.alias = {
       ...config.resolve.alias,
       '@payload-config': path.resolve(__dirname, 'payload.config.ts'),
