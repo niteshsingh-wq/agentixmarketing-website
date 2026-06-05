@@ -84,7 +84,7 @@ export function Header() {
         <div className="wrap">
           <div className="hdr-inner">
             <Link className="brand" href="/">
-              <img src="/agentix-logo.png" alt="Agentix" style={{ width: 32, height: 32, objectFit: "contain", flexShrink: 0 }} /> Agentix Marketing
+              <img src="/agentix-logo.png" alt="Agentix" style={{ width: 32, height: 32, objectFit: "contain", flexShrink: 0 }} />
             </Link>
 
             <nav className="nav" ref={navRef}>

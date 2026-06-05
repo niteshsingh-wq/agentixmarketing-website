@@ -1,26 +1,10 @@
-'use client'
 import Link from 'next/link'
-import { useLeadModal } from '@/components/lead/LeadContext'
 import { SERVICE_CATEGORIES } from '@/data/services'
 
 export function Footer() {
-  const { openLead } = useLeadModal()
   return (
     <footer className="foot">
       <div className="wrap">
-
-        {/* Brand + tagline */}
-        <div className="foot-brand">
-          <Link className="brand" href="/">
-            <img src="/agentix-logo.png" alt="Agentix" style={{ width: 36, height: 36, objectFit: 'contain', flexShrink: 0 }} />
-            Agentix Marketing
-          </Link>
-          <p>A results-driven Shopify &amp; SEO partner. We design, build and grow ecommerce brands that convert.</p>
-          <div className="foot-brand-ctas">
-            <button className="btn btn-primary btn-sm" onClick={() => openLead('form')}>Book a strategy call</button>
-            <button className="btn btn-ghost btn-sm" onClick={() => openLead('audit')}>Free SEO Audit</button>
-          </div>
-        </div>
 
         {/* Services grid — all 4 categories */}
         <div className="foot-svcs">
