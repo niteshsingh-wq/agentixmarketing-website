@@ -1,8 +1,36 @@
+import Link from 'next/link'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
-import { AGENTIX_CONTENT } from '@/data/content'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+import { CASE_STUDIES } from '@/data/case-studies'
 
-export function ClientShowcase() {
-  const S = AGENTIX_CONTENT.clientShowcase
+async function fetchShowcaseCases() {
+  try {
+    const payload = await getPayload({ config })
+    const { docs } = await payload.find({
+      collection: 'case-studies',
+      limit: 6,
+      select: { slug: true, client: true, industry: true, result: true, desc: true },
+    })
+    if (docs.length > 0) return docs.map((d: any) => ({
+      slug: d.slug,
+      name: d.client,
+      industry: d.industry || '',
+      result: d.result || '',
+      blurb: d.desc || '',
+    }))
+  } catch {}
+  return CASE_STUDIES.slice(0, 6).map(cs => ({
+    slug: cs.slug,
+    name: cs.client,
+    industry: cs.industry,
+    result: cs.result,
+    blurb: cs.desc,
+  }))
+}
+
+export async function ClientShowcase() {
+  const cases = await fetchShowcaseCases()
   return (
     <section className="section theme-light">
       <div className="wrap">
@@ -12,10 +40,13 @@ export function ClientShowcase() {
         </RevealWrapper>
 
         <div className="showcase-grid">
-          {S.map(([name, quote], i) => (
-            <RevealWrapper key={i} className="showcase-card">
-              <div className="showcase-logo">{name}</div>
-              <p>{quote}</p>
+          {cases.map((cs, i) => (
+            <RevealWrapper key={i}>
+              <Link href={`/case-studies/${cs.slug}`} className="showcase-card">
+                <div className="showcase-logo">{cs.name}</div>
+                {cs.result && <div className="showcase-result">{cs.result}</div>}
+                <p>{cs.blurb}</p>
+              </Link>
             </RevealWrapper>
           ))}
         </div>
