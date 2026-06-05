@@ -41,5 +41,5 @@ yarn-debug.log*
 # media uploads (server-side only)
 /media
 
-# scripts
-/scripts
+# scripts (deploy scripts are tracked)
+
