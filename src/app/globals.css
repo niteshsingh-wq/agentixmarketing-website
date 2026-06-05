@@ -390,6 +390,55 @@ body {
 }
 .drawer .drawer-foot { margin-top: auto; padding-top: 28px; }
 
+/* ── New mobile drawer — drw-* (replaces old drawer-primary/accord/sub) ── */
+.drw-nav { display: flex; flex-direction: column; }
+.drw-lnk {
+  display: block !important;
+  font-size: 26px !important;
+  font-weight: 600 !important;
+  color: var(--fg) !important;
+  text-decoration: none !important;
+  padding: 11px 0 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.drw-lnk:active { color: var(--blue) !important; }
+.drw-svcs { display: flex; flex-direction: column; margin-top: 6px; }
+.drw-cat { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.drw-cat-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.55);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 13px 0;
+  cursor: pointer;
+  text-align: left;
+  letter-spacing: -0.01em;
+}
+.drw-cat-hd svg { transition: transform 0.2s; flex-shrink: 0; }
+.drw-cat-hd--open { color: var(--blue) !important; }
+.drw-cat-hd--open svg { transform: rotate(180deg); }
+.drw-cat-bd { display: flex; flex-direction: column; padding-bottom: 10px; }
+.drw-svc {
+  display: block !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(255,255,255,0.65) !important;
+  text-decoration: none !important;
+  padding: 8px 10px !important;
+  border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+.drw-svc:active { color: var(--blue) !important; }
+.drw-foot { margin-top: auto; padding-top: 22px; }
+
 /* ── marquee ── */
 .marquee {
   display: flex;

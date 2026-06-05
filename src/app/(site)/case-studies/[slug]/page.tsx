@@ -7,19 +7,54 @@ import { Marquee } from '@/components/layout/Marquee'
 import { CtaSection } from '@/components/ui/CtaSection'
 import { CaseStudyCard } from '@/components/case-studies/CaseStudyCard'
 import { CaseStudyHeroCtas } from '@/components/case-studies/CaseStudyHeroCtas'
-import { getCaseStudy, getAllCaseStudySlugs, CASE_STUDIES } from '@/data/case-studies'
+import { getCaseStudy, getAllCaseStudySlugs, CASE_STUDIES, type CaseStudy } from '@/data/case-studies'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 
-export async function generateStaticParams() {
-  return getAllCaseStudySlugs().map(slug => ({ slug }))
+function payloadToCaseStudy(doc: any): CaseStudy {
+  return {
+    slug: doc.slug,
+    client: doc.client,
+    industry: doc.industry || '',
+    result: doc.result || '',
+    desc: doc.desc || '',
+    lead: doc.lead || '',
+    challenge: doc.challenge || '',
+    tags: (doc.tags || []).map((t: any) => t.value || t),
+    cats: (doc.cats || []).map((c: any) => c.value || c),
+    approach: (doc.approach || []).map((a: any) => [a.title || '', a.body || ''] as [string, string]),
+    metrics: (doc.metrics || []).map((m: any) => ({ n: m.n || '', l: m.l || '' })),
+    quote: { text: doc.quote?.text || '', author: doc.quote?.author || '', role: doc.quote?.role || '' },
+  }
+}
+
+async function fetchCaseStudy(slug: string): Promise<CaseStudy | null> {
+  try {
+    const payload = await getPayload({ config })
+    const { docs } = await payload.find({ collection: 'case-studies', where: { slug: { equals: slug } }, limit: 1 })
+    if (docs.length > 0) return payloadToCaseStudy(docs[0])
+  } catch (e) {
+    console.error('[case-study] Payload fetch failed, using static data:', e)
+  }
+  return getCaseStudy(slug)
+}
+
+async function fetchAllCaseStudies(): Promise<CaseStudy[]> {
+  try {
+    const payload = await getPayload({ config })
+    const { docs } = await payload.find({ collection: 'case-studies', limit: 100 })
+    if (docs.length > 0) return docs.map(payloadToCaseStudy)
+  } catch {}
+  return CASE_STUDIES
 }
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params
-  const cs = getCaseStudy(slug)
+  const cs = await fetchCaseStudy(slug)
   if (!cs) return {}
   return buildMeta({
     title: `${cs.client} Case Study — ${cs.result} | Agentix`,
@@ -32,10 +67,11 @@ export default async function CaseStudyPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
-  const cs = getCaseStudy(slug)
+  const cs = await fetchCaseStudy(slug)
   if (!cs) notFound()
 
-  const related = CASE_STUDIES.filter(c => c.slug !== slug).slice(0, 3)
+  const all = await fetchAllCaseStudies()
+  const related = all.filter(c => c.slug !== slug).slice(0, 3)
 
   const jsonLd = {
     '@context': 'https://schema.org',

@@ -34,7 +34,7 @@ export const Testimonials: CollectionConfig = {
         },
       ],
     },
-    { name: 'resultStat', type: 'text', label: 'Result Stat', admin: { description: 'E.g. "+312% revenue" — shown as the badge on the card.' } },
+    { name: 'result', type: 'text', label: 'Result stat', admin: { description: 'E.g. "+312% revenue" — shown as the badge on the card.' } },
   ],
   timestamps: true,
 }

@@ -29,7 +29,7 @@ function HeroStats() {
 }
 
 function HeroLeadForm() {
-  const [d, setD] = useState({ name: '', email: '', website: '', goal: 'Shopify build' })
+  const [d, setD] = useState({ name: '', email: '', website: '', goal: 'Store design / build' })
   const [sent, setSent] = useState(false)
   const set = (k: string, v: string) => setD(s => ({ ...s, [k]: v }))
   const valid = d.name.trim() !== '' && /\S+@\S+\.\S+/.test(d.email)
@@ -83,11 +83,12 @@ function HeroLeadForm() {
       <div className="field">
         <label>What do you need?</label>
         <select value={d.goal} onChange={e => set('goal', e.target.value)}>
-          <option>Shopify build</option>
-          <option>SEO &amp; visibility</option>
-          <option>Conversion (CRO)</option>
-          <option>Migration to Shopify</option>
-          <option>Not sure yet</option>
+          <option value="Store design / build">Shopify build</option>
+          <option value="SEO & visibility">SEO &amp; visibility</option>
+          <option value="Conversion (CRO)">Conversion (CRO)</option>
+          <option value="Migration to Shopify">Migration to Shopify</option>
+          <option value="Headless / Plus">Headless / Plus</option>
+          <option value="Not sure yet">Not sure yet</option>
         </select>
       </div>
       <button className="btn btn-primary" type="submit"

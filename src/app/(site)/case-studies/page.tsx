@@ -5,8 +5,40 @@ import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { Marquee } from '@/components/layout/Marquee'
 import { CtaSection } from '@/components/ui/CtaSection'
 import { FilterableGrid } from '@/components/case-studies/FilterBar'
-import { CASE_STUDIES } from '@/data/case-studies'
+import { CASE_STUDIES, type CaseStudy } from '@/data/case-studies'
 import { AGENTIX } from '@/data/site'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+
+export const dynamic = 'force-dynamic'
+
+function payloadToCaseStudy(doc: any): CaseStudy {
+  return {
+    slug: doc.slug,
+    client: doc.client,
+    industry: doc.industry || '',
+    result: doc.result || '',
+    desc: doc.desc || '',
+    lead: doc.lead || '',
+    challenge: doc.challenge || '',
+    tags: (doc.tags || []).map((t: any) => t.value || t),
+    cats: (doc.cats || []).map((c: any) => c.value || c),
+    approach: (doc.approach || []).map((a: any) => [a.title || '', a.body || ''] as [string, string]),
+    metrics: (doc.metrics || []).map((m: any) => ({ n: m.n || '', l: m.l || '' })),
+    quote: { text: doc.quote?.text || '', author: doc.quote?.author || '', role: doc.quote?.role || '' },
+  }
+}
+
+async function getCaseStudies(): Promise<CaseStudy[]> {
+  try {
+    const payload = await getPayload({ config })
+    const { docs } = await payload.find({ collection: 'case-studies', limit: 100, sort: '-createdAt' })
+    if (docs.length > 0) return docs.map(payloadToCaseStudy)
+  } catch (e) {
+    console.error('[case-studies] Payload fetch failed, using static data:', e)
+  }
+  return CASE_STUDIES
+}
 
 export const metadata: Metadata = buildMeta({
   title: 'Case Studies — Agentix Shopify & SEO Results',
@@ -20,7 +52,9 @@ const HERO_STATS = [
   { n: '$50M+', l: 'Client revenue driven' },
 ]
 
-export default function CaseStudiesPage() {
+export default async function CaseStudiesPage() {
+  const cases = await getCaseStudies()
+
   return (
     <>
       <PageHero
@@ -36,7 +70,7 @@ export default function CaseStudiesPage() {
 
       <section className="section theme-light" style={{ paddingTop: 'clamp(40px, 6vw, 90px)' }}>
         <div className="wrap">
-          <FilterableGrid cases={CASE_STUDIES} />
+          <FilterableGrid cases={cases} />
         </div>
       </section>
 

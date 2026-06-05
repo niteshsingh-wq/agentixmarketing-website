@@ -110,50 +110,55 @@ export function Header() {
       </header>
 
       <div className={'drawer theme-dark' + (drawer ? ' open' : '')}>
-        {/* Primary nav links — always visible at top */}
-        <Link className="drawer-primary" href="/case-studies" onClick={() => setDrawer(false)}>Case Studies</Link>
-        <Link className="drawer-primary" href="/results" onClick={() => setDrawer(false)}>Results</Link>
-        <Link className="drawer-primary" href="/about" onClick={() => setDrawer(false)}>About</Link>
-        <Link className="drawer-primary" href="/contact" onClick={() => setDrawer(false)}>Contact</Link>
-        <Link className="drawer-primary" href="/careers" onClick={() => setDrawer(false)}>Careers</Link>
-
-        <div className="drawer-divider" />
+        {/* Primary nav links */}
+        <div className="drw-nav">
+          <Link className="drw-lnk" href="/case-studies" onClick={() => setDrawer(false)}>Case Studies</Link>
+          <Link className="drw-lnk" href="/results" onClick={() => setDrawer(false)}>Results</Link>
+          <Link className="drw-lnk" href="/about" onClick={() => setDrawer(false)}>About</Link>
+          <Link className="drw-lnk" href="/contact" onClick={() => setDrawer(false)}>Contact</Link>
+          <Link className="drw-lnk" href="/careers" onClick={() => setDrawer(false)}>Careers</Link>
+        </div>
 
         {/* Service categories as accordion */}
-        {(Object.keys(MEGA) as (keyof typeof MEGA)[]).map(cat => {
-          const isOpen = openAccordion === cat
-          const allItems = (MEGA[cat] as any[]).flatMap(([, items]: [string, [string, string][]]) => items)
-          return (
-            <div className="drawer-accord" key={cat}>
-              <button
-                className={'drawer-accord-hd' + (isOpen ? ' open' : '')}
-                onClick={() => toggleAccordion(cat)}
-                aria-expanded={isOpen}
-              >
-                {cat}
-                <Chevron />
-              </button>
-              {isOpen && (
-                <div className="drawer-accord-bd">
-                  {(MEGA[cat] as any[]).map(([label, items]: [string, [string, string, string?][]]) => (
-                    <div key={label} className="drawer-accord-grp">
-                      <span className="drawer-accord-lbl">{label}</span>
-                      {items.map(([slug, name, tag]) => (
-                        <Link key={slug} href={`/services/${slug}`} className="drawer-sub" onClick={() => setDrawer(false)}>
-                          {name}{tag && <span className="tag">{tag}</span>}
-                        </Link>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )
-        })}
+        <div className="drw-svcs">
+          {(Object.keys(MEGA) as (keyof typeof MEGA)[]).map(cat => {
+            const isOpen = openAccordion === cat
+            const items = (MEGA[cat] as any[]).flatMap(([, subs]: [string, [string, string, string?][]]) => subs)
+            return (
+              <div key={cat} className="drw-cat">
+                <button
+                  className={'drw-cat-hd' + (isOpen ? ' drw-cat-hd--open' : '')}
+                  onClick={() => toggleAccordion(cat)}
+                  aria-expanded={isOpen}
+                >
+                  {cat}
+                  <Chevron />
+                </button>
+                {isOpen && (
+                  <div className="drw-cat-bd">
+                    {items.map(([slug, name]) => (
+                      <Link
+                        key={slug}
+                        href={`/services/${slug}`}
+                        className="drw-svc"
+                        onClick={() => setDrawer(false)}
+                      >
+                        {name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
 
-        <div className="drawer-foot">
-          <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}
-            onClick={() => { setDrawer(false); openLead('form') }}>
+        <div className="drw-foot">
+          <button
+            className="btn btn-primary"
+            style={{ width: '100%', justifyContent: 'center' }}
+            onClick={() => { setDrawer(false); openLead('form') }}
+          >
             Book a strategy call <Arrow />
           </button>
         </div>
