@@ -9,7 +9,7 @@ export function Arrow({ s = 16 }: { s?: number }) {
 
 export function Chevron() {
   return (
-    <svg viewBox="0 0 20 20" fill="none">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
       <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="1.6"
         strokeLinecap="round" strokeLinejoin="round" />
     </svg>
