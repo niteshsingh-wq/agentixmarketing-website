@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { CASE_STUDIES } from '@/data/case-studies'
 import { AGENTIX_CONTENT } from '@/data/content'
+import { SERVICES } from '@/data/services'
 
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get('secret')
@@ -11,7 +12,11 @@ export async function GET(req: NextRequest) {
   }
 
   const payload = await getPayload({ config })
-  const results: { caseStudies: any[]; testimonials: any[] } = { caseStudies: [], testimonials: [] }
+  const results: { caseStudies: any[]; testimonials: any[]; services: any[] } = {
+    caseStudies: [],
+    testimonials: [],
+    services: [],
+  }
 
   // Seed case studies
   for (const cs of CASE_STUDIES) {
@@ -66,6 +71,37 @@ export async function GET(req: NextRequest) {
       results.testimonials.push({ author: tm.author, status: 'created' })
     } catch (err) {
       results.testimonials.push({ author: tm.author, status: 'error', error: String(err) })
+    }
+  }
+
+  // Seed services
+  for (const svc of Object.values(SERVICES)) {
+    try {
+      const existing = await payload.find({ collection: 'services', where: { slug: { equals: svc.slug } }, limit: 1 })
+      if (existing.totalDocs > 0) {
+        results.services.push({ slug: svc.slug, status: 'skipped (already exists)' })
+        continue
+      }
+      await payload.create({
+        collection: 'services',
+        data: {
+          slug: svc.slug,
+          title: svc.title,
+          category: svc.category,
+          tag: svc.tag,
+          metaTitle: svc.metaTitle,
+          metaDescription: svc.metaDescription,
+          focusKeyword: svc.focusKeyword,
+          lead: svc.lead,
+          stats: svc.stats.map(s => ({ n: s.n, l: s.l })),
+          deliverables: svc.deliverables.map(([title, body]) => ({ title, body })),
+          process: svc.process.map(([step, desc]) => ({ step, desc })),
+          faqs: svc.faqs.map(([q, a]) => ({ q, a })),
+        },
+      })
+      results.services.push({ slug: svc.slug, status: 'created' })
+    } catch (err) {
+      results.services.push({ slug: svc.slug, status: 'error', error: String(err) })
     }
   }
 

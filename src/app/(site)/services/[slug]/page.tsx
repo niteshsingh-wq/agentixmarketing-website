@@ -1,20 +1,47 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { getService, getAllServiceSlugs } from '@/data/services'
+import { getService } from '@/data/services'
+import { type Service } from '@/data/services'
 import { buildMeta } from '@/lib/metadata'
 import { ServicePage } from '@/components/services/ServicePage'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 
-export async function generateStaticParams() {
-  return getAllServiceSlugs().map(slug => ({ slug }))
+function payloadToService(doc: any): Service {
+  return {
+    slug: doc.slug,
+    title: doc.title || doc.slug,
+    category: doc.category || '',
+    tag: doc.tag || '',
+    metaTitle: doc.metaTitle || '',
+    metaDescription: doc.metaDescription || '',
+    focusKeyword: doc.focusKeyword || '',
+    lead: doc.lead || '',
+    stats: (doc.stats || []).map((s: any) => ({ n: s.n || '', l: s.l || '' })),
+    deliverables: (doc.deliverables || []).map((d: any) => [d.title || '', d.body || ''] as [string, string]),
+    process: (doc.process || []).map((p: any) => [p.step || '', p.desc || ''] as [string, string]),
+    faqs: (doc.faqs || []).map((f: any) => [f.q || '', f.a || ''] as [string, string]),
+  }
+}
+
+async function fetchService(slug: string): Promise<Service | null> {
+  try {
+    const payload = await getPayload({ config })
+    const { docs } = await payload.find({ collection: 'services', where: { slug: { equals: slug } }, limit: 1 })
+    if (docs.length > 0) return payloadToService(docs[0])
+  } catch (e) {
+    console.error('[service] Payload fetch failed, using static data:', e)
+  }
+  return getService(slug) ?? null
 }
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params
-  const service = getService(slug)
+  const service = await fetchService(slug)
   if (!service) return {}
   return buildMeta({
     title: service.metaTitle,
@@ -27,7 +54,7 @@ export default async function ServiceRoute(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
-  const service = getService(slug)
+  const service = await fetchService(slug)
   if (!service) notFound()
 
   const serviceJsonLd = {
