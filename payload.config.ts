@@ -1,14 +1,14 @@
 import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { Services } from './src/payload/collections/Services'
-import { CaseStudies } from './src/payload/collections/CaseStudies'
-import { BlogPosts } from './src/payload/collections/BlogPosts'
-import { Leads } from './src/payload/collections/Leads'
-import { ContactSubmissions } from './src/payload/collections/ContactSubmissions'
-import { Testimonials } from './src/payload/collections/Testimonials'
-import { Media } from './src/payload/collections/Media'
-import { Users } from './src/payload/collections/Users'
+import { Services } from './src/payload/collections/Services.ts'
+import { CaseStudies } from './src/payload/collections/CaseStudies.ts'
+import { BlogPosts } from './src/payload/collections/BlogPosts.ts'
+import { Leads } from './src/payload/collections/Leads.ts'
+import { ContactSubmissions } from './src/payload/collections/ContactSubmissions.ts'
+import { Testimonials } from './src/payload/collections/Testimonials.ts'
+import { Media } from './src/payload/collections/Media.ts'
+import { Users } from './src/payload/collections/Users.ts'
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
