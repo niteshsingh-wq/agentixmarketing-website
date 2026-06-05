@@ -1,0 +1,11 @@
+/*
+ * Agentix admin — minimal brand touches
+ * NO !important overrides. Payload owns its own layout.
+ * Only CSS variables that Payload reads via data-theme.
+ */
+
+/* Force dark mode for Agentix brand */
+[data-theme='dark'] {
+  --theme-success-500: #38b6ff;
+  --theme-success-350: rgba(56, 182, 255, 0.8);
+}
