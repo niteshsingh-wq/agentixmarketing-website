@@ -12,7 +12,7 @@ export function Footer() {
         {/* Brand + tagline */}
         <div className="foot-brand">
           <Link className="brand" href="/">
-            <img src="/agentix-logo.png" alt="Agentix Marketing" style={{ width: 26, height: 26, objectFit: 'contain', flexShrink: 0 }} />
+            <img src="/agentix-logo.png" alt="Agentix" style={{ width: 36, height: 36, objectFit: 'contain', flexShrink: 0 }} />
             Agentix Marketing
           </Link>
           <p>A results-driven Shopify &amp; SEO partner. We design, build and grow ecommerce brands that convert.</p>
