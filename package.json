@@ -2,12 +2,13 @@
   "name": "agentix-marketing",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=20.0.0"
   },
   "scripts": {
     "dev": "next dev",
-    "build": "PAYLOAD_CONFIG_PATH=./payload.config.mts payload migrate:create --name initial && PAYLOAD_CONFIG_PATH=./payload.config.mts payload migrate && next build",
+    "build": "payload migrate:create --name initial && payload migrate && next build",
     "build:local": "NEXT_CPU_COUNT=1 NEXT_TELEMETRY_DISABLED=1 next build --webpack",
     "start": "node server.js",
     "start:next": "next start",
