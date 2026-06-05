@@ -7,14 +7,14 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "echo 'Pre-built .next committed to repo — skipping build'",
+    "build": "next build",
     "build:local": "NEXT_CPU_COUNT=1 NEXT_TELEMETRY_DISABLED=1 next build --webpack",
     "start": "node server.js",
     "start:next": "next start",
     "payload": "payload"
   },
   "dependencies": {
-    "@payloadcms/db-sqlite": "^3.85.0",
+    "@payloadcms/db-postgres": "^3.85.0",
     "@payloadcms/next": "^3.0.0",
     "@payloadcms/richtext-lexical": "^3.0.0",
     "monaco-editor": "^0.55.1",

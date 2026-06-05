@@ -1,5 +1,5 @@
 import { buildConfig } from 'payload'
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { Services } from './src/payload/collections/Services'
 import { CaseStudies } from './src/payload/collections/CaseStudies'
@@ -46,11 +46,9 @@ export default buildConfig({
     Users,
   ],
 
-  // SQLite — single file database, no external server needed
-  // Works on any Node.js hosting including Hostinger shared hosting
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URL || 'file:./agentix.db',
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URL,
     },
   }),
 
