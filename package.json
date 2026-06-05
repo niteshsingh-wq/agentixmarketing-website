@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "NEXT_CPU_COUNT=1 NEXT_TELEMETRY_DISABLED=1 next build",
+    "build": "NEXT_CPU_COUNT=1 NEXT_TELEMETRY_DISABLED=1 next build --webpack",
     "start": "node server.js",
     "start:next": "next start",
     "payload": "payload"
