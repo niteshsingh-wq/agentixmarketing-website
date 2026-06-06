@@ -1,0 +1,48 @@
+# Agentix Marketing
+
+> Agentix Marketing is a specialist Shopify development and SEO agency helping ecommerce brands design, build, and grow high-converting online stores. Based in the US, serving brands globally.
+
+## What we do
+
+- Custom Shopify store development, theme design, and Shopify Plus enterprise solutions
+- Platform migrations to Shopify (WooCommerce, Magento, BigCommerce)
+- B2B and wholesale Shopify solutions
+- SEO strategy, technical SEO, on-page SEO, and AI-era search optimization
+- Conversion rate optimization (CRO) and performance analytics
+- Email marketing and retention
+- Custom Shopify app development and API integrations
+
+## Key pages
+
+- Homepage: https://agentixmarketing.com/
+- Services overview: https://agentixmarketing.com/services/
+- Case studies: https://agentixmarketing.com/case-studies/
+- Results: https://agentixmarketing.com/results/
+- About: https://agentixmarketing.com/about/
+- Contact: https://agentixmarketing.com/contact/
+
+## Service pages
+
+- https://agentixmarketing.com/services/custom-shopify-store-development
+- https://agentixmarketing.com/services/theme-design-customization
+- https://agentixmarketing.com/services/shopify-plus-enterprise
+- https://agentixmarketing.com/services/store-redesign-optimization
+- https://agentixmarketing.com/services/platform-migration-to-shopify
+- https://agentixmarketing.com/services/b2b-wholesale-solutions
+- https://agentixmarketing.com/services/custom-shopify-app-development
+- https://agentixmarketing.com/services/api-third-party-integrations
+- https://agentixmarketing.com/services/multi-channel-integration
+- https://agentixmarketing.com/services/advanced-checkout-customization
+- https://agentixmarketing.com/services/performance-speed-optimization
+- https://agentixmarketing.com/services/seo-strategy-implementation
+- https://agentixmarketing.com/services/on-page-technical-seo
+- https://agentixmarketing.com/services/local-seo-google-business
+- https://agentixmarketing.com/services/ai-powered-seo-analytics
+- https://agentixmarketing.com/services/ecommerce-seo-online-stores
+- https://agentixmarketing.com/services/content-marketing-link-building
+- https://agentixmarketing.com/services/monthly-shopify-maintenance
+- https://agentixmarketing.com/services/monthly-seo-monitoring
+- https://agentixmarketing.com/services/conversion-rate-optimization
+- https://agentixmarketing.com/services/performance-analytics-reporting
+- https://agentixmarketing.com/services/email-marketing-retention
+- https://agentixmarketing.com/services/ongoing-strategic-consultation
