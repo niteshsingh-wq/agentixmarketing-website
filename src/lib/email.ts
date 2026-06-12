@@ -1,22 +1,23 @@
 import nodemailer from 'nodemailer'
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.BREVO_USER,
-    pass: process.env.BREVO_SMTP_KEY,
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
   },
 })
 
 export async function sendEmail(opts: { to: string; subject: string; html: string }) {
-  if (!process.env.BREVO_USER || !process.env.BREVO_SMTP_KEY) {
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
     // In dev without credentials — log and skip, don't crash the route
     console.log('[email] Credentials not set — skipping send to', opts.to, '|', opts.subject)
     return
   }
   return transporter.sendMail({
-    from: '"Agentix" <hello@agentixmarketing.com>',
+    from: `"Agentix" <${process.env.GMAIL_USER}>`,
     ...opts,
   })
 }

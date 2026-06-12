@@ -109,7 +109,7 @@ export default function SettingsPage() {
             <div className="ss-sub">Connected services powering the Agentix backend.</div>
             <div className="flex" style={{ flexDirection: 'column', gap: 12 }}>
               {[
-                { icon: 'B', iconColor: '#0a9d6e', name: 'Brevo SMTP', sub: 'smtp-relay.brevo.com · transactional & follow-up email', connected: !!process.env.BREVO_USER || true },
+                { icon: 'G', iconColor: '#0a9d6e', name: 'Google Workspace SMTP', sub: 'smtp.gmail.com · transactional & follow-up email', connected: !!process.env.GMAIL_USER || true },
                 { icon: Icons.db, iconColor: 'var(--blue)', name: 'PostgreSQL Database', sub: 'localhost:5432/agentix · primary datastore', connected: true },
                 { icon: Icons.image, iconColor: 'var(--muted)', name: 'Cloudinary CDN', sub: 'Media delivery & transforms · not configured', connected: false },
               ].map((item, i) => (
