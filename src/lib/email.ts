@@ -10,6 +10,10 @@ const transporter = nodemailer.createTransport({
   },
 })
 
+// agentixmarketing.com is a Workspace domain alias — SMTP auth requires the
+// account's primary address (GMAIL_USER), but mail is sent as this alias.
+const FROM_ADDRESS = 'connect@agentixmarketing.com'
+
 export async function sendEmail(opts: { to: string; subject: string; html: string }) {
   if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
     // In dev without credentials — log and skip, don't crash the route
@@ -17,7 +21,7 @@ export async function sendEmail(opts: { to: string; subject: string; html: strin
     return
   }
   return transporter.sendMail({
-    from: `"Agentix" <${process.env.GMAIL_USER}>`,
+    from: `"Agentix" <${FROM_ADDRESS}>`,
     ...opts,
   })
 }
