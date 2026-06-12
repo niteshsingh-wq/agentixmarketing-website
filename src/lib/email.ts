@@ -20,10 +20,12 @@ export async function sendEmail(opts: { to: string; subject: string; html: strin
     console.log('[email] Credentials not set — skipping send to', opts.to, '|', opts.subject)
     return
   }
-  return transporter.sendMail({
+  const info = await transporter.sendMail({
     from: `"Agentix" <${FROM_ADDRESS}>`,
     ...opts,
   })
+  console.log('[email] sent', opts.to, '|', opts.subject, '| messageId:', info.messageId, '| response:', info.response)
+  return info
 }
 
 export function notifyHtml(fields: Record<string, string>) {
