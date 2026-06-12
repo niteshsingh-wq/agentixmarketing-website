@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import localFont from 'next/font/local'
 import '../globals.css'
 import { LeadProvider } from '@/components/lead/LeadContext'
@@ -23,10 +24,25 @@ export const metadata: Metadata = {
   description: 'Agentix Marketing — specialist Shopify development and SEO agency helping ecommerce brands grow.',
 }
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID
+
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={neueHaas.variable}>
       <body>
+        {GA_ID && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
         <LeadProvider>
           <Header />
           <main>{children}</main>
