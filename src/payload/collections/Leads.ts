@@ -16,7 +16,13 @@ export const Leads: CollectionConfig = {
         { name: 'email', type: 'email', required: true, admin: { width: '50%' } },
       ],
     },
-    { name: 'website', type: 'text' },
+    {
+      type: 'row',
+      fields: [
+        { name: 'phone', type: 'text', label: 'Phone Number', admin: { width: '50%', description: 'Include country code, e.g. +1 555 123 4567' } },
+        { name: 'website', type: 'text', admin: { width: '50%' } },
+      ],
+    },
     {
       type: 'row',
       fields: [

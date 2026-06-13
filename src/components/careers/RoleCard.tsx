@@ -6,7 +6,7 @@ interface Role { title: string; meta: string[]; req: string; does: string }
 
 export function RoleCard({ role }: { role: Role }) {
   const [open, setOpen] = useState(false)
-  const [data, setData] = useState({ name: '', email: '', linkedin: '', why: '' })
+  const [data, setData] = useState({ name: '', email: '', phone: '', linkedin: '', why: '' })
   const [sent, setSent] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const set = (k: string, v: string) => setData(d => ({ ...d, [k]: v }))
@@ -70,9 +70,15 @@ export function RoleCard({ role }: { role: Role }) {
                 <label>Role</label>
                 <input value={role.title} readOnly style={{ opacity: 0.7 }} />
               </div>
-              <div className="field">
-                <label>LinkedIn URL <span style={{ opacity: 0.6 }}>(optional)</span></label>
-                <input value={data.linkedin} onChange={e => set('linkedin', e.target.value)} placeholder="linkedin.com/in/you" />
+              <div className="field-row">
+                <div className="field">
+                  <label>Phone number <span style={{ opacity: 0.6 }}>(optional)</span></label>
+                  <input type="tel" value={data.phone} onChange={e => set('phone', e.target.value)} placeholder="+1 555 123 4567" />
+                </div>
+                <div className="field">
+                  <label>LinkedIn URL <span style={{ opacity: 0.6 }}>(optional)</span></label>
+                  <input value={data.linkedin} onChange={e => set('linkedin', e.target.value)} placeholder="linkedin.com/in/you" />
+                </div>
               </div>
               <div className="field">
                 <label>Why Agentix?</label>

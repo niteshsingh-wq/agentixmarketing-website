@@ -15,7 +15,7 @@ export function ContactSide() {
       <div className="detail-block">
         <div className="detail-row">
           <span className="dr-k">Email</span>
-          <span className="dr-v"><a href="mailto:hello@agentixmarketing.com">hello@agentixmarketing.com</a></span>
+          <span className="dr-v"><a href="mailto:connect@agentixmarketing.com">connect@agentixmarketing.com</a></span>
         </div>
         <div className="detail-row">
           <span className="dr-k">Response time</span>

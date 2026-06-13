@@ -29,7 +29,7 @@ function HeroStats() {
 }
 
 function HeroLeadForm() {
-  const [d, setD] = useState({ name: '', email: '', website: '', goal: 'Store design / build' })
+  const [d, setD] = useState({ name: '', email: '', phone: '', website: '', goal: 'Store design / build' })
   const [sent, setSent] = useState(false)
   const set = (k: string, v: string) => setD(s => ({ ...s, [k]: v }))
   const valid = d.name.trim() !== '' && /\S+@\S+\.\S+/.test(d.email)
@@ -76,9 +76,15 @@ function HeroLeadForm() {
           <input type="email" value={d.email} onChange={e => set('email', e.target.value)} placeholder="jane@brand.com" />
         </div>
       </div>
-      <div className="field">
-        <label>Website URL <span style={{ opacity: 0.6 }}>(optional)</span></label>
-        <input value={d.website} onChange={e => set('website', e.target.value)} placeholder="yourstore.com" />
+      <div className="field-row">
+        <div className="field">
+          <label>Phone number <span style={{ opacity: 0.6 }}>(optional)</span></label>
+          <input type="tel" value={d.phone} onChange={e => set('phone', e.target.value)} placeholder="+1 555 123 4567" />
+        </div>
+        <div className="field">
+          <label>Website URL <span style={{ opacity: 0.6 }}>(optional)</span></label>
+          <input value={d.website} onChange={e => set('website', e.target.value)} placeholder="yourstore.com" />
+        </div>
       </div>
       <div className="field">
         <label>What do you need?</label>

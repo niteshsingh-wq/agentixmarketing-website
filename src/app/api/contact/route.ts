@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { sendEmail, notifyHtml, confirmHtml } from '@/lib/email'
+import { appendLeadToSheet } from '@/lib/sheets'
+import { notifyTeamsNewLead } from '@/lib/teams'
 
 export async function POST(req: NextRequest) {
   let body: Record<string, string>
@@ -36,6 +38,7 @@ export async function POST(req: NextRequest) {
         data: {
           name: body.name.trim(),
           email: body.email.trim(),
+          phone: body.phone || '',
           website: body.website || '',
           goal: body.goal || undefined,
           stage: body.stage || undefined,
@@ -53,6 +56,7 @@ export async function POST(req: NextRequest) {
         data: {
           name: body.name.trim(),
           email: body.email.trim(),
+          phone: body.phone || '',
           website: body.website || '',
           need: body.need || undefined,
           message: body.message || '',
@@ -64,27 +68,45 @@ export async function POST(req: NextRequest) {
     console.error('[contact] Payload save error:', err)
   }
 
-  // Notification to team
-  await sendEmail({
-    to: process.env.NOTIFY_EMAIL!,
-    subject: `New ${isLead ? 'lead' : 'contact'}: ${body.name.trim()} — ${body.goal || body.need || 'Agentix.co'}`,
-    html: notifyHtml({
-      Name: body.name.trim(),
-      Email: body.email.trim(),
-      Website: body.website || '',
-      ...(isLead
-        ? { Goal: body.goal || '', Stage: body.stage || '', Budget: body.budget || '' }
-        : { Need: body.need || '', Message: body.message || '' }),
-      'Source page': body.sourcePage || '',
-    }),
-  })
+  const notifyFields: Record<string, string> = {
+    Name: body.name.trim(),
+    Email: body.email.trim(),
+    Phone: body.phone || '',
+    Website: body.website || '',
+    ...(isLead
+      ? { Goal: body.goal || '', Stage: body.stage || '', Budget: body.budget || '' }
+      : { Need: body.need || '', Message: body.message || '' }),
+    'Source page': body.sourcePage || '',
+  }
 
-  // Confirmation to sender
-  await sendEmail({
-    to: body.email.trim(),
-    subject: 'We got your message — Agentix',
-    html: confirmHtml(firstName, body.email.trim()),
-  })
+  // Run all notification side-effects in parallel — none of these should block the response
+  await Promise.allSettled([
+    sendEmail({
+      to: process.env.NOTIFY_EMAIL!,
+      subject: `New ${isLead ? 'lead' : 'contact'}: ${body.name.trim()} — ${body.goal || body.need || 'Agentix.co'}`,
+      html: notifyHtml(notifyFields),
+    }),
+    sendEmail({
+      to: body.email.trim(),
+      subject: 'We got your message — Agentix',
+      html: confirmHtml(firstName, body.email.trim()),
+    }),
+    appendLeadToSheet({
+      name: body.name.trim(),
+      email: body.email.trim(),
+      phone: body.phone || '',
+      website: body.website || '',
+      goal: body.goal || '',
+      stage: body.stage || '',
+      budget: body.budget || '',
+      message: body.message || body.need || '',
+      sourcePage: body.sourcePage || '',
+      utmSource: body.utmSource || '',
+      utmMedium: body.utmMedium || '',
+      utmCampaign: body.utmCampaign || '',
+    }),
+    notifyTeamsNewLead(notifyFields),
+  ])
 
   return NextResponse.json({ ok: true })
 }

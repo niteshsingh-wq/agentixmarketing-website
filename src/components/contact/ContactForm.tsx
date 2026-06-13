@@ -3,12 +3,12 @@ import { useState } from 'react'
 import { Arrow, Check } from '@/components/ui/Arrow'
 
 interface FormData {
-  name: string; email: string; website: string
+  name: string; email: string; phone: string; website: string
   need: string; message: string; company: string
 }
 
 export function ContactForm() {
-  const [data, setData] = useState<FormData>({ name: '', email: '', website: '', need: '', message: '', company: '' })
+  const [data, setData] = useState<FormData>({ name: '', email: '', phone: '', website: '', need: '', message: '', company: '' })
   const [sent, setSent] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const set = (k: keyof FormData, v: string) => setData(d => ({ ...d, [k]: v }))
@@ -38,7 +38,7 @@ export function ContactForm() {
           <h3>Message received.</h3>
           <p>Thanks {data.name.split(' ')[0]} — we&apos;ll reply to {data.email} within one business day with next steps. No spam, ever.</p>
           <button className="btn btn-ghost" style={{ marginTop: 22 }}
-            onClick={() => { setSent(false); setData({ name: '', email: '', website: '', need: '', message: '', company: '' }) }}>
+            onClick={() => { setSent(false); setData({ name: '', email: '', phone: '', website: '', need: '', message: '', company: '' }) }}>
             Send another message
           </button>
         </div>
@@ -67,9 +67,15 @@ export function ContactForm() {
           <input type="email" value={data.email} onChange={e => set('email', e.target.value)} placeholder="jane@brand.com" required />
         </div>
       </div>
-      <div className="field">
-        <label>Website URL</label>
-        <input value={data.website} onChange={e => set('website', e.target.value)} placeholder="yourstore.com" />
+      <div className="field-row">
+        <div className="field">
+          <label>Phone number <span style={{ opacity: 0.6 }}>(optional, include country code)</span></label>
+          <input type="tel" value={data.phone} onChange={e => set('phone', e.target.value)} placeholder="+1 555 123 4567" />
+        </div>
+        <div className="field">
+          <label>Website URL</label>
+          <input value={data.website} onChange={e => set('website', e.target.value)} placeholder="yourstore.com" />
+        </div>
       </div>
       <div className="field">
         <label>What do you need?</label>

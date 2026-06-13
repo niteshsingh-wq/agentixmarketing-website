@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
     html: notifyHtml({
       Name: body.name.trim(),
       Email: body.email.trim(),
+      Phone: body.phone || '',
       Role: body.role || '',
       LinkedIn: body.linkedin || '',
       'Why Agentix': body.why || '',

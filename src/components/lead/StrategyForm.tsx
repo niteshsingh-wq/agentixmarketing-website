@@ -17,12 +17,12 @@ function budgetLabel(v: number) {
 
 interface FormData {
   goal: string; stage: string; budget: number
-  name: string; email: string; website: string
+  name: string; email: string; phone: string; website: string
 }
 
 export function StrategyForm({ onDone }: { onDone: () => void }) {
   const [step, setStep] = useState(0)
-  const [data, setData] = useState<FormData>({ goal: '', stage: '', budget: 7, name: '', email: '', website: '' })
+  const [data, setData] = useState<FormData>({ goal: '', stage: '', budget: 7, name: '', email: '', phone: '', website: '' })
   const [done, setDone] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
@@ -104,6 +104,10 @@ export function StrategyForm({ onDone }: { onDone: () => void }) {
             <div className="field">
               <label>Work email</label>
               <input type="email" value={data.email} onChange={e => set('email', e.target.value)} placeholder="jane@brand.com" />
+            </div>
+            <div className="field">
+              <label>Phone number <span style={{ opacity: 0.6 }}>(optional, include country code)</span></label>
+              <input type="tel" value={data.phone} onChange={e => set('phone', e.target.value)} placeholder="+1 555 123 4567" />
             </div>
             <div className="field">
               <label>Website URL <span style={{ opacity: 0.6 }}>(optional)</span></label>
