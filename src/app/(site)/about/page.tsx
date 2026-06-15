@@ -31,10 +31,10 @@ const PARTNERS: [string, string][] = [
 ]
 
 const TEAM: [string, string, string, string][] = [
-  ['AM', 'Alex Morgan', 'Co-Founder, Shopify Development', '10 years building on Shopify — 200+ stores shipped and scaled.'],
-  ['JL', 'Jordan Lee', 'Co-Founder, SEO & Growth', 'Former in-house SEO lead at two Series B ecommerce brands.'],
-  ['SR', 'Sam Rivera', 'Senior Shopify Developer', 'Shopify Plus certified and a custom app specialist.'],
-  ['CP', 'Casey Park', 'SEO Lead', 'Technical SEO, content strategy and AI search optimization.'],
+  ['NS', 'Nitesh Singh', 'Founder & Director, Shopify Development', 'Founded Agentix on the conviction that Shopify and SEO should never be separated. Leads development strategy and shapes every client engagement from the ground up.'],
+  ['CC', 'Chetan Choudhary', 'General Manager, Digital Marketing & SEO', 'Drives organic growth strategy across the agency — blending technical SEO with precision digital marketing to turn rankings into real revenue.'],
+  ['PP', 'Prashant Pandit', 'CTO, Shopify & Shopify Plus Development', 'Architects complex Shopify Plus builds, custom apps and deep integrations. The technical backbone behind every store we ship.'],
+  ['KS', 'Khushal Singh', 'Digital Marketing Strategist', 'Executes performance-driven campaigns across paid and organic channels — converting traffic into measurable, compounding growth.'],
 ]
 
 export default function AboutPage() {
