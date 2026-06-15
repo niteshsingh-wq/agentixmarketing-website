@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: 'Agentix Marketing — Shopify Development & SEO Agency',
   description: 'Agentix Marketing — specialist Shopify development and SEO agency helping ecommerce brands grow.',
   verification: {
-    google: '7YXAp2qaLU74MJMk0614T-wzGER42xif3HMljt8J83M',
+    google: 'PuIG47pvpdaUy1yax4V_2cLIvFotlNaqEcklvpBblw0',
   },
 }
 
