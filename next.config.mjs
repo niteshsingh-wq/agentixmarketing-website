@@ -34,7 +34,14 @@ const nextConfig = {
     ]
   },
   async redirects() {
-    return []
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.agentixmarketing.com' }],
+        destination: 'https://agentixmarketing.com/:path*',
+        permanent: true,
+      },
+    ]
   },
 }
 
