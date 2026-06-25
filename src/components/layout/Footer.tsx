@@ -29,7 +29,7 @@ export function Footer() {
               <li><Link href="/about">About Us</Link></li>
               <li><Link href="/careers">Careers</Link></li>
               <li><Link href="/contact">Contact</Link></li>
-              <li><Link href="/blog">Blog</Link></li>
+
             </ul>
           </div>
         </div>

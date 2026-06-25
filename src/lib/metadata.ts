@@ -16,7 +16,7 @@ export function buildMeta(opts: {
       url: opts.canonical,
       siteName: 'Agentix Marketing',
       type: 'website',
-      images: [{ url: opts.ogImage ?? 'https://agentixmarketing.com/og-default.jpg' }],
+      images: [{ url: opts.ogImage ?? 'https://agentixmarketing.com/agentix-logo.png', width: 512, height: 512, alt: 'Agentix Marketing' }],
     },
     twitter: {
       card: 'summary_large_image',
