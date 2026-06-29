@@ -22,6 +22,14 @@ const neueHaas = localFont({
 export const metadata: Metadata = {
   title: 'Agentix Marketing — Shopify Development & SEO Agency',
   description: 'Agentix Marketing — specialist Shopify development and SEO agency helping ecommerce brands grow.',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   verification: {
     google: 'PuIG47pvpdaUy1yax4V_2cLIvFotlNaqEcklvpBblw0',
   },
