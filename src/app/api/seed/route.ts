@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
           author: tm.author,
           role: tm.role,
           company: tm.company,
-          rating: String(tm.rating),
+          rating: String(tm.rating) as never,
           result: tm.result,
         },
       })
