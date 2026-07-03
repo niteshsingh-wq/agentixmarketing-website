@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { Arrow, Check } from '@/components/ui/Arrow'
+import { linkify } from '@/lib/linkify'
 
 interface Role { title: string; meta: string[]; req: string; does: string }
 
@@ -42,8 +43,8 @@ export function RoleCard({ role }: { role: Role }) {
       </div>
 
       <div className="role-body">
-        <div><h5>Requirements</h5><p>{role.req}</p></div>
-        <div><h5>What you&apos;ll do</h5><p>{role.does}</p></div>
+        <div><h5>Requirements</h5><p>{linkify(role.req, '/careers')}</p></div>
+        <div><h5>What you&apos;ll do</h5><p>{linkify(role.does, '/careers')}</p></div>
       </div>
 
       {open && (

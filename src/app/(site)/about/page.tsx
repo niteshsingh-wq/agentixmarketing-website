@@ -1,9 +1,12 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
 import { PageHero } from '@/components/ui/PageHero'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { Marquee } from '@/components/layout/Marquee'
 import { CtaSection } from '@/components/ui/CtaSection'
+import { Arrow } from '@/components/ui/Arrow'
+import { linkify } from '@/lib/linkify'
 
 export const metadata: Metadata = buildMeta({
   title: 'About Agentix — Shopify Development & SEO Agency',
@@ -24,9 +27,9 @@ const DIFFERENTIATORS: [string, string][] = [
   ['No lock-in', "Month-to-month on ongoing services — because we'd rather earn your renewal than contractually require it."],
 ]
 
-const PARTNERS: [string, string][] = [
-  ['S', 'Shopify Partner'],
-  ['S+', 'Shopify Plus Partner'],
+const PARTNERS: [string, string, string?][] = [
+  ['S', 'Shopify Partner', 'https://www.shopify.com/partners/directory/partner/nickso'],
+  ['S+', 'Shopify Plus Partner', 'https://www.shopify.com/partners/directory/partner/nickso'],
   ['G', 'Google Partner'],
 ]
 
@@ -58,10 +61,10 @@ export default function AboutPage() {
               <span className="eyebrow">Our story</span>
               <h2 style={{ marginTop: 18 }}>Why we exist.</h2>
               <p className="si-sub">
-                Most ecommerce agencies are either developers who don&apos;t understand SEO, or SEO agencies who don&apos;t understand how stores are built. We started Agentix because we saw how much was left on the table when those two disciplines didn&apos;t talk to each other.
+                Most ecommerce agencies are either developers who don&apos;t understand <Link href="/services/seo-strategy-implementation" className="page-link">SEO</Link>, or SEO agencies who don&apos;t understand how stores are built. We started Agentix because we saw how much was left on the table when those two disciplines didn&apos;t talk to each other.
               </p>
               <p className="si-sub" style={{ marginTop: 16 }}>
-                A store built without SEO architecture needs expensive remediation. An SEO strategy disconnected from how Shopify actually works produces rankings that don&apos;t convert. We built an agency where both practices are in the same room, informed by each other, from day one.
+                A store built without SEO architecture needs expensive remediation. An <Link href="/services/on-page-technical-seo" className="page-link">SEO strategy</Link> disconnected from how <Link href="/services/custom-shopify-store-development" className="page-link">Shopify</Link> actually works produces rankings that don&apos;t convert. We built an agency where both practices are in the same room, informed by each other, from day one.
               </p>
             </RevealWrapper>
             <RevealWrapper>
@@ -70,7 +73,7 @@ export default function AboutPage() {
                   <div className="principle" key={t}>
                     <span className="pr-n">{n}</span>
                     <h4>{t}</h4>
-                    <p>{d}</p>
+                    <p>{linkify(d, '/about')}</p>
                   </div>
                 ))}
               </div>
@@ -91,7 +94,7 @@ export default function AboutPage() {
               <RevealWrapper key={t} className="diff-card">
                 <div className="df-n">{String(i + 1).padStart(2, '0')}</div>
                 <h4>{t}</h4>
-                <p>{d}</p>
+                <p>{linkify(d, '/about')}</p>
               </RevealWrapper>
             ))}
           </div>
@@ -106,10 +109,16 @@ export default function AboutPage() {
               Accredited partners
             </p>
             <div className="partner-strip">
-              {PARTNERS.map(([mark, label]) => (
-                <span className="partner-badge" key={label}>
-                  <span className="pb-mark">{mark}</span>{label}
-                </span>
+              {PARTNERS.map(([mark, label, href]) => (
+                href ? (
+                  <a className="partner-badge" key={label} href={href} target="_blank" rel="noopener noreferrer">
+                    <span className="pb-mark">{mark}</span>{label}
+                  </a>
+                ) : (
+                  <span className="partner-badge" key={label}>
+                    <span className="pb-mark">{mark}</span>{label}
+                  </span>
+                )
               ))}
             </div>
           </RevealWrapper>
@@ -130,10 +139,25 @@ export default function AboutPage() {
                 <div className="team-avatar">{initials}</div>
                 <h4>{name}</h4>
                 <div className="tc-role">{role}</div>
-                <p className="tc-bio">{bio}</p>
+                <p className="tc-bio">{linkify(bio, '/about')}</p>
               </RevealWrapper>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section theme-light" style={{ paddingTop: 0, paddingBottom: 'clamp(40px, 5vw, 64px)' }}>
+        <div className="wrap">
+          <RevealWrapper>
+            <span className="eyebrow">Explore</span>
+            <div className="link-row" style={{ marginTop: 20 }}>
+              <Link href="/case-studies">Case studies <Arrow s={14} /></Link>
+              <Link href="/results">Results &amp; proof <Arrow s={14} /></Link>
+              <Link href="/services/custom-shopify-store-development">Shopify development <Arrow s={14} /></Link>
+              <Link href="/services/seo-strategy-implementation">SEO services <Arrow s={14} /></Link>
+              <Link href="/contact">Work with us <Arrow s={14} /></Link>
+            </div>
+          </RevealWrapper>
         </div>
       </section>
 

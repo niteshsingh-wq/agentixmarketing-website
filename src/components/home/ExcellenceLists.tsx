@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { AGENTIX_CONTENT } from '@/data/content'
+import { linkify } from '@/lib/linkify'
 
 export function ExcellenceLists() {
   const E = AGENTIX_CONTENT.excellence
@@ -12,7 +13,7 @@ export function ExcellenceLists() {
             <span className="eyebrow">Full capability map</span>
             <h2 style={{ marginTop: 18 }}>{E.heading}</h2>
           </div>
-          <p>{E.body}</p>
+          <p>{linkify(E.body, '/')}</p>
         </RevealWrapper>
 
         <div className="excel-grid">

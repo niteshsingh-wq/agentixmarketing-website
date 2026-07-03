@@ -2,6 +2,7 @@
 import { useRef } from 'react'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { AGENTIX_CONTENT } from '@/data/content'
+import { linkify } from '@/lib/linkify'
 
 function Stars({ n }: { n: number }) {
   return (
@@ -63,7 +64,7 @@ export function TestimonialsSection() {
                   <Stars n={t.rating} />
                   <span className="tm-result">{t.result}</span>
                 </div>
-                <blockquote className="tm-quote">{t.quote}</blockquote>
+                <blockquote className="tm-quote">{linkify(t.quote, '/')}</blockquote>
                 <figcaption className="tm-author">
                   <div className="tm-avatar">{t.author[0]}</div>
                   <div className="tm-meta">

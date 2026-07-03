@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
 import { PageHero } from '@/components/ui/PageHero'
 import { Faq } from '@/components/ui/Faq'
@@ -7,6 +8,7 @@ import { Marquee } from '@/components/layout/Marquee'
 import { ContactForm } from '@/components/contact/ContactForm'
 import { ContactSide } from '@/components/contact/ContactSide'
 import { ContactHeroCtas } from '@/components/contact/ContactHeroCtas'
+import { Arrow } from '@/components/ui/Arrow'
 
 export const metadata: Metadata = buildMeta({
   title: "Contact Agentix — Free Strategy Call & SEO Audit",
@@ -51,10 +53,16 @@ export default function ContactPage() {
       <section className="section theme-dark">
         <div className="wrap">
           <RevealWrapper style={{ maxWidth: 680 }}>
-            <span className="eyebrow">Questions</span>
+            <span className="eyebrow">Explore first</span>
             <h2 className="h2" style={{ marginTop: 18 }}>Before you reach out.</h2>
+            <p className="si-sub" style={{ marginTop: 16 }}>
+              See our <Link href="/case-studies" className="page-link">client case studies</Link>, review our{' '}
+              <Link href="/results" className="page-link">results &amp; proof</Link>, or browse our{' '}
+              <Link href="/services/custom-shopify-store-development" className="page-link">Shopify development</Link> and{' '}
+              <Link href="/services/seo-strategy-implementation" className="page-link">SEO services</Link> to get a feel for what we do.
+            </p>
           </RevealWrapper>
-          <RevealWrapper><Faq items={CONTACT_FAQS} /></RevealWrapper>
+          <RevealWrapper style={{ marginTop: 40 }}><Faq items={CONTACT_FAQS} /></RevealWrapper>
         </div>
       </section>
     </>

@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
 import { PageHero } from '@/components/ui/PageHero'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { Marquee } from '@/components/layout/Marquee'
 import { CtaSection } from '@/components/ui/CtaSection'
 import { ResultsTabs } from '@/components/results/ResultsTabs'
+import { Arrow } from '@/components/ui/Arrow'
+import { linkify } from '@/lib/linkify'
 
 export const metadata: Metadata = buildMeta({
   title: 'Results & Proof — Agentix Shopify & SEO Agency',
@@ -75,7 +78,7 @@ export default function ResultsPage() {
             {METHODOLOGY.map(([t, d], i) => (
               <RevealWrapper key={t} className={'method-col' + (i === 0 ? ' lit' : '')}>
                 <h3>{t}</h3>
-                <p>{d}</p>
+                <p>{linkify(d, '/results')}</p>
               </RevealWrapper>
             ))}
           </div>
@@ -93,7 +96,7 @@ export default function ResultsPage() {
               <RevealWrapper key={i}>
                 <figure className="tm-card">
                   <div className="tm-card-top"><Stars /><span className="tm-result">{t.result}</span></div>
-                  <blockquote className="tm-quote">{t.quote}</blockquote>
+                  <blockquote className="tm-quote">{linkify(t.quote, '/results')}</blockquote>
                   <figcaption className="tm-author">
                     <div className="tm-avatar">{t.author[0]}</div>
                     <div className="tm-meta"><b>{t.author}</b><span>{t.role} · {t.company}</span></div>
@@ -102,6 +105,21 @@ export default function ResultsPage() {
               </RevealWrapper>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section theme-dark" style={{ paddingTop: 0, paddingBottom: 'clamp(40px, 5vw, 64px)' }}>
+        <div className="wrap">
+          <RevealWrapper>
+            <span className="eyebrow">Explore the work</span>
+            <div className="link-row" style={{ marginTop: 20 }}>
+              <Link href="/case-studies">Client case studies <Arrow s={14} /></Link>
+              <Link href="/services/ecommerce-seo-online-stores">Ecommerce SEO <Arrow s={14} /></Link>
+              <Link href="/services/conversion-rate-optimization">Conversion rate optimisation <Arrow s={14} /></Link>
+              <Link href="/services/custom-shopify-store-development">Shopify development <Arrow s={14} /></Link>
+              <Link href="/contact">Book a free audit <Arrow s={14} /></Link>
+            </div>
+          </RevealWrapper>
         </div>
       </section>
 

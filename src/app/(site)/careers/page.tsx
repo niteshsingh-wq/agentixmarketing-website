@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
 import { PageHero } from '@/components/ui/PageHero'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { Marquee } from '@/components/layout/Marquee'
 import { RoleCard } from '@/components/careers/RoleCard'
+import { linkify } from '@/lib/linkify'
 
 export const metadata: Metadata = buildMeta({
   title: 'Careers at Agentix — Join Our Shopify & SEO Team',
@@ -56,10 +58,19 @@ export default function CareersPage() {
             {WHY.map(([t, d]) => (
               <RevealWrapper key={t} className="why-col">
                 <h3>{t}</h3>
-                <p>{d}</p>
+                <p>{linkify(d, '/careers')}</p>
               </RevealWrapper>
             ))}
           </div>
+          <RevealWrapper style={{ marginTop: 40 }}>
+            <p className="si-sub" style={{ maxWidth: 640 }}>
+              We&apos;re the team behind <Link href="/case-studies" className="page-link">real ecommerce growth</Link> for brands across the US — combining{' '}
+              <Link href="/services/custom-shopify-store-development" className="page-link">Shopify development</Link> and{' '}
+              <Link href="/services/seo-strategy-implementation" className="page-link">SEO strategy</Link> under one roof.{' '}
+              Learn more <Link href="/about" className="page-link">about the team</Link> or read our{' '}
+              <Link href="/results" className="page-link">results</Link> before applying.
+            </p>
+          </RevealWrapper>
         </div>
       </section>
 

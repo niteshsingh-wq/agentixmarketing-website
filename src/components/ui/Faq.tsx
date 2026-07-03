@@ -1,7 +1,8 @@
 'use client'
 import { useState } from 'react'
+import { linkify } from '@/lib/linkify'
 
-export function Faq({ items }: { items: [string, string][] }) {
+export function Faq({ items, skip }: { items: [string, string][]; skip?: string }) {
   const [open, setOpen] = useState<number>(0)
   return (
     <div className="faq">
@@ -10,7 +11,7 @@ export function Faq({ items }: { items: [string, string][] }) {
           <button className="faq-q" onClick={() => setOpen(open === i ? -1 : i)}>
             {q}<span className="fq-ic"></span>
           </button>
-          <div className="faq-a"><p>{a}</p></div>
+          <div className="faq-a"><p>{linkify(a, skip)}</p></div>
         </div>
       ))}
     </div>

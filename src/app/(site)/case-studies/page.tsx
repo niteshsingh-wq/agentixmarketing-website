@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
 import { PageHero } from '@/components/ui/PageHero'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
@@ -7,6 +8,7 @@ import { CtaSection } from '@/components/ui/CtaSection'
 import { FilterableGrid } from '@/components/case-studies/FilterBar'
 import { CASE_STUDIES, type CaseStudy } from '@/data/case-studies'
 import { AGENTIX } from '@/data/site'
+import { Arrow } from '@/components/ui/Arrow'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
@@ -89,6 +91,21 @@ export default async function CaseStudiesPage() {
               </RevealWrapper>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section theme-dark" style={{ paddingTop: 0, paddingBottom: 'clamp(40px, 5vw, 64px)' }}>
+        <div className="wrap">
+          <RevealWrapper>
+            <span className="eyebrow">Explore further</span>
+            <div className="link-row" style={{ marginTop: 20 }}>
+              <Link href="/results">Results by discipline <Arrow s={14} /></Link>
+              <Link href="/services/custom-shopify-store-development">Shopify development <Arrow s={14} /></Link>
+              <Link href="/services/ecommerce-seo-online-stores">Ecommerce SEO <Arrow s={14} /></Link>
+              <Link href="/services/conversion-rate-optimization">Conversion rate optimisation <Arrow s={14} /></Link>
+              <Link href="/contact">Work with us <Arrow s={14} /></Link>
+            </div>
+          </RevealWrapper>
         </div>
       </section>
 

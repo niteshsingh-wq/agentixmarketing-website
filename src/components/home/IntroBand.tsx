@@ -1,5 +1,6 @@
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { AGENTIX_CONTENT } from '@/data/content'
+import { linkify } from '@/lib/linkify'
 
 export function IntroBand() {
   const C = AGENTIX_CONTENT.intro
@@ -16,12 +17,12 @@ export function IntroBand() {
             </div>
           </RevealWrapper>
           <RevealWrapper>
-            <p className="ib-body">{C.body}</p>
+            <p className="ib-body">{linkify(C.body, '/')}</p>
             <ul className="intro-points">
               {C.points.map((p, i) => (
                 <li key={i}>
                   <span className="ip-n">0{i + 1}</span>
-                  <span>{p}</span>
+                  <span>{linkify(p, '/')}</span>
                 </li>
               ))}
             </ul>

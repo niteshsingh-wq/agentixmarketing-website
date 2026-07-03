@@ -7,12 +7,14 @@ import { LeadSection } from '@/components/home/LeadSection'
 import { CtaBand } from '@/components/home/CtaBand'
 import { ServiceHeroCtas, ServiceIntroCta } from './ServiceCtas'
 import { getServiceExtras, getRelatedServices } from './serviceExtras'
+import { linkify } from '@/lib/linkify'
 import type { Service } from '@/data/services'
 
 export function ServicePage({ service: S }: { service: Service }) {
   const { intro, expert, successStats } = getServiceExtras(S)
   const related = getRelatedServices(S.slug, S.category)
   const isViz = S.category === 'Digital Marketing'
+  const skip = `/services/${S.slug}`
 
   return (
     <>
@@ -29,7 +31,7 @@ export function ServicePage({ service: S }: { service: Service }) {
             <div>
               <span className="eyebrow">{S.tag}</span>
               <h1 className="svc-title" style={{ marginTop: 18 }}>{S.title}</h1>
-              <p className="svc-lead">{S.lead}</p>
+              <p className="svc-lead">{linkify(S.lead, skip)}</p>
               <ServiceHeroCtas />
             </div>
             <RevealWrapper className="svc-statcard">
@@ -56,10 +58,10 @@ export function ServicePage({ service: S }: { service: Service }) {
             <RevealWrapper>
               <span className="eyebrow">Why it matters</span>
               <h2 style={{ marginTop: 18 }}>{intro.heading}</h2>
-              <p className="si-sub">{intro.sub}</p>
+              <p className="si-sub">{linkify(intro.sub, skip)}</p>
               <ul className="si-points">
                 {intro.points.map((p, i) => (
-                  <li key={i}><Arrow s={18} />{p}</li>
+                  <li key={i}><Arrow s={18} />{linkify(p, skip)}</li>
                 ))}
               </ul>
             </RevealWrapper>
@@ -85,7 +87,7 @@ export function ServicePage({ service: S }: { service: Service }) {
               <RevealWrapper key={i} className="inc-card">
                 <div className="inc-num">{String(i + 1).padStart(2, '0')}</div>
                 <h4>{t}</h4>
-                <p>{d}</p>
+                <p>{linkify(d, skip)}</p>
               </RevealWrapper>
             ))}
           </div>
@@ -104,7 +106,7 @@ export function ServicePage({ service: S }: { service: Service }) {
               <RevealWrapper key={i} className={'proc-step' + (i === 0 ? ' lit' : '')}>
                 <span className="pi">Step {String(i + 1).padStart(2, '0')}</span>
                 <h4>{t}</h4>
-                <p>{d}</p>
+                <p>{linkify(d, skip)}</p>
               </RevealWrapper>
             ))}
           </div>
@@ -117,14 +119,14 @@ export function ServicePage({ service: S }: { service: Service }) {
           <RevealWrapper>
             <span className="eyebrow">The Agentix difference</span>
             <h2 style={{ marginTop: 18 }}>{expert.heading}</h2>
-            <p className="ex-desc">{expert.desc}</p>
+            <p className="ex-desc">{linkify(expert.desc, skip)}</p>
           </RevealWrapper>
           <div className="expert-grid">
             <div className="insights">
               {expert.insights.map(([t, d], i) => (
                 <RevealWrapper key={i} className="insight">
                   <span className="ins-badge">#{i + 1}</span>
-                  <p><b>{t}</b> {d}</p>
+                  <p><b>{t}</b> {linkify(d, skip)}</p>
                 </RevealWrapper>
               ))}
             </div>
@@ -143,6 +145,13 @@ export function ServicePage({ service: S }: { service: Service }) {
               </RevealWrapper>
             ))}
           </div>
+          <RevealWrapper>
+            <div className="link-row">
+              <Link href="/case-studies">See client case studies <Arrow s={14} /></Link>
+              <Link href="/results">Results &amp; proof <Arrow s={14} /></Link>
+              <Link href="/contact">Book a free strategy call <Arrow s={14} /></Link>
+            </div>
+          </RevealWrapper>
         </div>
       </section>
 
@@ -158,7 +167,7 @@ export function ServicePage({ service: S }: { service: Service }) {
               <h2 className="h2" style={{ marginTop: 18 }}>Good to know.</h2>
             </RevealWrapper>
             <RevealWrapper>
-              <Faq items={S.faqs} />
+              <Faq items={S.faqs} skip={`/services/${S.slug}`} />
             </RevealWrapper>
           </div>
         </section>

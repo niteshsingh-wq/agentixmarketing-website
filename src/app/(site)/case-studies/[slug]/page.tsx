@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
+import { Arrow } from '@/components/ui/Arrow'
+import { linkify } from '@/lib/linkify'
 import { Marquee } from '@/components/layout/Marquee'
 import { CtaSection } from '@/components/ui/CtaSection'
 import { CaseStudyCard } from '@/components/case-studies/CaseStudyCard'
@@ -99,7 +101,7 @@ export default async function CaseStudyPage(
             <div>
               <span className="eyebrow">{cs.industry}</span>
               <h1 className="svc-title" style={{ marginTop: 18 }}>{cs.client}</h1>
-              <p className="svc-lead">{cs.lead}</p>
+              <p className="svc-lead">{linkify(cs.lead)}</p>
               <div className="cs-tags" style={{ marginTop: 24 }}>
                 {cs.tags.map(t => (
                   <span key={t} className="tag" style={{ fontSize: 12, color: 'var(--blue)', border: '1px solid var(--ink-line)', padding: '5px 12px', borderRadius: 100 }}>{t}</span>
@@ -129,7 +131,7 @@ export default async function CaseStudyPage(
           <RevealWrapper style={{ maxWidth: 760 }}>
             <span className="eyebrow">The challenge</span>
             <h2 className="h2" style={{ marginTop: 18 }}>{cs.result}</h2>
-            <p className="csd-body">{cs.challenge}</p>
+            <p className="csd-body">{linkify(cs.challenge)}</p>
           </RevealWrapper>
         </div>
       </section>
@@ -146,7 +148,7 @@ export default async function CaseStudyPage(
               <RevealWrapper key={i} className="inc-card">
                 <div className="inc-num">{String(i + 1).padStart(2, '0')}</div>
                 <h4>{t}</h4>
-                <p>{d}</p>
+                <p>{linkify(d)}</p>
               </RevealWrapper>
             ))}
           </div>
@@ -171,7 +173,7 @@ export default async function CaseStudyPage(
           </div>
           {cs.quote && (
             <RevealWrapper className="cs-quote">
-              <blockquote>&ldquo;{cs.quote.text}&rdquo;</blockquote>
+              <blockquote>&ldquo;{linkify(cs.quote.text)}&rdquo;</blockquote>
               <div className="cq-author"><b>{cs.quote.author}</b> · {cs.quote.role}</div>
             </RevealWrapper>
           )}
@@ -188,6 +190,21 @@ export default async function CaseStudyPage(
           <div className="cs-grid">
             {related.map(r => <CaseStudyCard key={r.slug} cs={r} />)}
           </div>
+        </div>
+      </section>
+
+      <section className="section theme-dark" style={{ paddingTop: 0, paddingBottom: 'clamp(40px, 5vw, 64px)' }}>
+        <div className="wrap">
+          <RevealWrapper>
+            <span className="eyebrow">Keep reading</span>
+            <div className="link-row" style={{ marginTop: 20 }}>
+              <Link href="/case-studies">All case studies <Arrow s={14} /></Link>
+              <Link href="/results">Results &amp; proof <Arrow s={14} /></Link>
+              <Link href="/services/ecommerce-seo-online-stores">Ecommerce SEO <Arrow s={14} /></Link>
+              <Link href="/services/custom-shopify-store-development">Shopify development <Arrow s={14} /></Link>
+              <Link href="/contact">Work with us <Arrow s={14} /></Link>
+            </div>
+          </RevealWrapper>
         </div>
       </section>
 
