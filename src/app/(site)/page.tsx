@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { buildMeta } from '@/lib/metadata'
+import { SITE_URL } from '@/lib/site'
 import { Hero } from '@/components/home/Hero'
 import { IntroBand } from '@/components/home/IntroBand'
 import { ServicesSection } from '@/components/home/ServicesSection'
@@ -17,15 +18,15 @@ import { Marquee } from '@/components/layout/Marquee'
 export const metadata: Metadata = buildMeta({
   title: 'Agentix Marketing — Shopify Development & SEO Agency',
   description: 'A results-driven Shopify & SEO partner. Custom store development, conversion optimization and search visibility — engineered to grow your ecommerce revenue.',
-  canonical: 'https://agentixmarketing.com',
-  ogImage: 'https://agentixmarketing.com/og-default.jpg',
+  canonical: SITE_URL,
+  ogImage: `${SITE_URL}/og-default.jpg`,
 })
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Agentix Marketing',
-  url: 'https://agentixmarketing.com',
+  url: SITE_URL,
   description: 'Specialist Shopify development and SEO agency — Agentix Marketing Private Limited',
   areaServed: 'US',
   sameAs: [],

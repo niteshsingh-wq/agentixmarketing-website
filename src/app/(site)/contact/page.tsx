@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
+import { SITE_URL } from '@/lib/site'
 import { PageHero } from '@/components/ui/PageHero'
 import { Faq } from '@/components/ui/Faq'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
@@ -13,7 +14,7 @@ import { Arrow } from '@/components/ui/Arrow'
 export const metadata: Metadata = buildMeta({
   title: "Contact Agentix — Free Strategy Call & SEO Audit",
   description: "Book a free 30-minute strategy session or request your free SEO audit. No pitch decks. No obligation. We respond within one business day.",
-  canonical: 'https://agentixmarketing.com/contact',
+  canonical: `${SITE_URL}/contact`,
 })
 
 const CONTACT_FAQS: [string, string][] = [
