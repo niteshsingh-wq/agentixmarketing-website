@@ -1,12 +1,13 @@
 import { getAllServiceSlugs } from '@/data/services'
 import { CASE_STUDIES } from '@/data/case-studies'
+import { SITE_URL } from '@/lib/site'
 import type { MetadataRoute } from 'next'
 
 const LAUNCH = new Date('2026-06-06')
 const LAST_UPDATE = new Date('2026-06-25')
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://agentixmarketing.com'
+  const base = SITE_URL
   const services = getAllServiceSlugs().map(slug => ({
     url: `${base}/services/${slug}`,
     lastModified: LAUNCH,

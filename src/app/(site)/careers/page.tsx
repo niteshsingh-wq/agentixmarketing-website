@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
+import { SITE_URL } from '@/lib/site'
 import { PageHero } from '@/components/ui/PageHero'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { Marquee } from '@/components/layout/Marquee'
@@ -10,7 +11,7 @@ import { linkify } from '@/lib/linkify'
 export const metadata: Metadata = buildMeta({
   title: 'Careers at Agentix — Join Our Shopify & SEO Team',
   description: 'Join a small, senior team doing their best work. Remote-first roles in Shopify development and SEO for US and UK timezones.',
-  canonical: 'https://agentixmarketing.com/careers',
+  canonical: `${SITE_URL}/careers`,
 })
 
 const WHY: [string, string][] = [

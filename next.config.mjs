@@ -38,8 +38,8 @@ const nextConfig = {
     return [
       {
         source: '/:path*',
-        has: [{ type: 'host', value: 'www.agentixmarketing.com' }],
-        destination: 'https://agentixmarketing.com/:path*',
+        has: [{ type: 'host', value: 'agentixmarketing.com' }],
+        destination: 'https://www.agentixmarketing.com/:path*',
         permanent: true,
       },
     ]

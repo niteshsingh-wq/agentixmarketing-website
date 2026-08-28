@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { getService } from '@/data/services'
 import { type Service } from '@/data/services'
 import { buildMeta } from '@/lib/metadata'
+import { SITE_URL } from '@/lib/site'
 import { ServicePage } from '@/components/services/ServicePage'
 import { getPayload } from 'payload'
 import config from '@payload-config'
@@ -46,7 +47,7 @@ export async function generateMetadata(
   return buildMeta({
     title: service.metaTitle,
     description: service.metaDescription,
-    canonical: `https://agentixmarketing.com/services/${slug}`,
+    canonical: `${SITE_URL}/services/${slug}`,
   })
 }
 
@@ -65,10 +66,10 @@ export default async function ServiceRoute(
     provider: {
       '@type': 'Organization',
       name: 'Agentix',
-      url: 'https://agentixmarketing.com',
+      url: SITE_URL,
     },
     areaServed: 'US',
-    url: `https://agentixmarketing.com/services/${service.slug}`,
+    url: `${SITE_URL}/services/${service.slug}`,
   }
 
   const faqJsonLd = service.faqs.length > 0 ? {

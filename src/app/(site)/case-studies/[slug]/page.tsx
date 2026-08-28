@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
+import { SITE_URL } from '@/lib/site'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { Arrow } from '@/components/ui/Arrow'
 import { linkify } from '@/lib/linkify'
@@ -61,7 +62,7 @@ export async function generateMetadata(
   return buildMeta({
     title: `${cs.client} Case Study — ${cs.result} | Agentix`,
     description: `${cs.client} — ${cs.result}. ${cs.lead}`,
-    canonical: `https://agentixmarketing.com/case-studies/${slug}`,
+    canonical: `${SITE_URL}/case-studies/${slug}`,
   })
 }
 
@@ -80,8 +81,8 @@ export default async function CaseStudyPage(
     '@type': 'Article',
     headline: `${cs.client} — ${cs.result}`,
     description: cs.lead,
-    author: { '@type': 'Organization', name: 'Agentix', url: 'https://agentixmarketing.com' },
-    publisher: { '@type': 'Organization', name: 'Agentix', url: 'https://agentixmarketing.com' },
+    author: { '@type': 'Organization', name: 'Agentix', url: SITE_URL },
+    publisher: { '@type': 'Organization', name: 'Agentix', url: SITE_URL },
   }
 
   return (

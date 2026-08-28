@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
+import { SITE_URL } from '@/lib/site'
 import { PageHero } from '@/components/ui/PageHero'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { Marquee } from '@/components/layout/Marquee'
@@ -12,7 +13,7 @@ import { linkify } from '@/lib/linkify'
 export const metadata: Metadata = buildMeta({
   title: 'Results & Proof — Agentix Shopify & SEO Agency',
   description: "Every metric is from a real client engagement. +285% avg organic traffic, +145% mobile CVR, 200+ Shopify stores shipped. We don't round up.",
-  canonical: 'https://agentixmarketing.com/results',
+  canonical: `${SITE_URL}/results`,
 })
 
 const METHODOLOGY: [string, string][] = [

@@ -1,3 +1,4 @@
+import { SITE_URL } from '@/lib/site'
 import type { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
@@ -13,6 +14,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'PerplexityBot', allow: '/' },
       { userAgent: 'Googlebot', allow: '/' },
     ],
-    sitemap: 'https://agentixmarketing.com/sitemap.xml',
+    sitemap: `${SITE_URL}/sitemap.xml`,
   }
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { buildMeta } from '@/lib/metadata'
+import { SITE_URL } from '@/lib/site'
 import { PageHero } from '@/components/ui/PageHero'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { Marquee } from '@/components/layout/Marquee'
@@ -45,7 +46,7 @@ async function getCaseStudies(): Promise<CaseStudy[]> {
 export const metadata: Metadata = buildMeta({
   title: 'Case Studies — Agentix Shopify & SEO Results',
   description: 'Real client results across Shopify development and SEO. See how we\'ve driven +312% organic revenue, 300% faster order processing and more for ecommerce brands.',
-  canonical: 'https://agentixmarketing.com/case-studies',
+  canonical: `${SITE_URL}/case-studies`,
 })
 
 const HERO_STATS = [

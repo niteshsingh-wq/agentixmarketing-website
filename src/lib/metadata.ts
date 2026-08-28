@@ -1,3 +1,4 @@
+import { SITE_URL } from '@/lib/site'
 import type { Metadata } from 'next'
 
 export function buildMeta(opts: {
@@ -16,7 +17,7 @@ export function buildMeta(opts: {
       url: opts.canonical,
       siteName: 'Agentix Marketing',
       type: 'website',
-      images: [{ url: opts.ogImage ?? 'https://agentixmarketing.com/og-default.png', width: 1200, height: 630, alt: 'Agentix Marketing' }],
+      images: [{ url: opts.ogImage ?? `${SITE_URL}/og-default.png`, width: 1200, height: 630, alt: 'Agentix Marketing' }],
     },
     twitter: {
       card: 'summary_large_image',
