@@ -8,7 +8,6 @@ import type { ServiceGroup } from '@/data/content'
 
 function ExplorerGroup({ group }: { group: ServiceGroup }) {
   const [tab, setTab] = useState(group.tabs[0].id)
-  const active = group.tabs.find(t => t.id === tab) ?? group.tabs[0]
   return (
     <RevealWrapper className="svc-ex-group">
       <div className="svc-ex-head">
@@ -22,16 +21,38 @@ function ExplorerGroup({ group }: { group: ServiceGroup }) {
           </button>
         ))}
       </div>
-      <div className="svc-ex-panel" key={tab}>
-        {active.items.map(([title, tag, desc, slug], i) => (
-          <Link key={i} href={`/services/${slug}`} className="svc-ex-card">
-            <span className="sx-arrow"><Arrow s={18} /></span>
-            <span className="sx-tag">{tag}</span>
-            <h4>{title}</h4>
-            <p>{desc}</p>
-          </Link>
-        ))}
-      </div>
+      {/*
+        Render every tab's panel (and its service links) into the DOM at once,
+        and only toggle visibility with `hidden`. Previously this looked up just
+        the active tab via .find() and rendered only that one, which meant every
+        non-default tab's /services/* links never existed in the server-rendered
+        HTML at all -- a crawler reading raw markup (no click simulation) only
+        ever saw the first tab's links. Keeping every panel mounted makes each
+        link crawlable regardless of which tab is active on load.
+
+        `hidden` alone is not enough to hide the inactive panels: the UA rule
+        `[hidden] { display: none }` loses to the author-origin
+        `.svc-ex-panel { display: grid }` in globals.css. So `hidden` stays for
+        semantics (screen readers, find-in-page) and the inline style -- which
+        outranks both -- does the visual toggle.
+      */}
+      {group.tabs.map(t => (
+        <div
+          className="svc-ex-panel"
+          key={t.id}
+          hidden={t.id !== tab}
+          style={{ display: t.id !== tab ? 'none' : 'grid' }}
+        >
+          {t.items.map(([title, tag, desc, slug], i) => (
+            <Link key={i} href={`/services/${slug}`} className="svc-ex-card">
+              <span className="sx-arrow"><Arrow s={18} /></span>
+              <span className="sx-tag">{tag}</span>
+              <h4>{title}</h4>
+              <p>{desc}</p>
+            </Link>
+          ))}
+        </div>
+      ))}
     </RevealWrapper>
   )
 }
