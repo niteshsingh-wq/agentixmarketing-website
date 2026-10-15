@@ -19,16 +19,29 @@ export interface SheetLeadFields {
 }
 
 export async function appendLeadToSheet(fields: SheetLeadFields) {
-  if (!SHEET_ID || !process.env.GOOGLE_SHEETS_CLIENT_EMAIL || !process.env.GOOGLE_SHEETS_PRIVATE_KEY) {
-    console.log('[sheets] Credentials not set — skipping append for', fields.email)
+  const clientEmail = process.env.GOOGLE_SHEETS_CLIENT_EMAIL
+  const privateKey = process.env.GOOGLE_SHEETS_PRIVATE_KEY
+
+  const missing = [
+    !SHEET_ID && 'GOOGLE_SHEET_ID',
+    !clientEmail && 'GOOGLE_SHEETS_CLIENT_EMAIL',
+    !privateKey && 'GOOGLE_SHEETS_PRIVATE_KEY',
+  ].filter(Boolean)
+
+  if (!SHEET_ID || !clientEmail || !privateKey) {
+    // warn, not log — this is a misconfiguration, and silently skipping is how
+    // this integration stayed dead in production without anyone noticing.
+    console.warn(
+      `[sheets] NOT CONFIGURED — lead for ${fields.email} was NOT written to the spreadsheet. Missing env vars: ${missing.join(', ')}`
+    )
     return
   }
 
   try {
     const auth = new google.auth.GoogleAuth({
       credentials: {
-        client_email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
-        private_key: process.env.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        client_email: clientEmail,
+        private_key: privateKey.replace(/\\n/g, '\n'),
       },
       scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     })

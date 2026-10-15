@@ -12,8 +12,12 @@ import { AGENTIX } from '@/data/site'
 import { Arrow } from '@/components/ui/Arrow'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { handlePayloadReadError, staticFallbackEnabled } from '@/lib/content'
 
-export const dynamic = 'force-dynamic'
+/**
+ * ISR — the listing is invalidated whenever any case study changes.
+ */
+export const revalidate = 3600
 
 function payloadToCaseStudy(doc: any): CaseStudy {
   return {
@@ -36,9 +40,9 @@ async function getCaseStudies(): Promise<CaseStudy[]> {
   try {
     const payload = await getPayload({ config })
     const { docs } = await payload.find({ collection: 'case-studies', limit: 100, sort: '-createdAt' })
-    if (docs.length > 0) return docs.map(payloadToCaseStudy)
+    if (docs.length > 0 || !staticFallbackEnabled()) return docs.map(payloadToCaseStudy)
   } catch (e) {
-    console.error('[case-studies] Payload fetch failed, using static data:', e)
+    handlePayloadReadError('case studies listing', e)
   }
   return CASE_STUDIES
 }

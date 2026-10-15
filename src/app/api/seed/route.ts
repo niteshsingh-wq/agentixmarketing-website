@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
@@ -5,10 +6,39 @@ import { CASE_STUDIES } from '@/data/case-studies'
 import { AGENTIX_CONTENT } from '@/data/content'
 import { SERVICES } from '@/data/services'
 
-export async function GET(req: NextRequest) {
-  const secret = req.nextUrl.searchParams.get('secret')
-  if (!secret || secret !== process.env.SEED_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized — set SEED_SECRET env var and pass ?secret=...' }, { status: 401 })
+// Mutates the database — never prerender or cache.
+export const dynamic = 'force-dynamic'
+
+const SECRET_HEADER = 'x-seed-secret'
+
+/** Constant-time comparison that does not leak length via early return. */
+function secretMatches(provided: string, expected: string): boolean {
+  const a = Buffer.from(provided)
+  const b = Buffer.from(expected)
+  if (a.length !== b.length) {
+    // Still burn a comparison so the failure path has similar timing.
+    timingSafeEqual(a, a)
+    return false
+  }
+  return timingSafeEqual(a, b)
+}
+
+/**
+ * Seeding is a POST with the secret in a header.
+ *
+ * It used to be a GET with `?secret=...`, which writes the credential into
+ * Vercel access logs, browser history and any outbound Referer header.
+ */
+export async function POST(req: NextRequest) {
+  const expected = process.env.SEED_SECRET
+  if (!expected) {
+    console.error('[seed] SEED_SECRET is not set — refusing to seed')
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const provided = req.headers.get(SECRET_HEADER)
+  if (!provided || !secretMatches(provided, expected)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const payload = await getPayload({ config })
@@ -106,4 +136,15 @@ export async function GET(req: NextRequest) {
   }
 
   return NextResponse.json(results)
+}
+
+/**
+ * The old `GET /api/seed?secret=...` form is permanently disabled so the
+ * secret can never travel in a URL again.
+ */
+export async function GET() {
+  return NextResponse.json(
+    { error: `Method not allowed. Use POST with the ${SECRET_HEADER} header.` },
+    { status: 405, headers: { Allow: 'POST' } }
+  )
 }

@@ -8,16 +8,16 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "payload migrate && next build",
+    "build": "node scripts/migrate.mjs && next build",
     "build:local": "NEXT_CPU_COUNT=1 NEXT_TELEMETRY_DISABLED=1 next build --webpack",
-    "start": "node server.js",
-    "start:next": "next start",
+    "start": "next start",
     "payload": "payload"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.85.0",
     "@payloadcms/next": "^3.0.0",
     "@payloadcms/richtext-lexical": "^3.0.0",
+    "drizzle-orm": "0.45.2",
     "googleapis": "^173.0.0",
     "monaco-editor": "^0.55.1",
     "next": "16.2.7",
