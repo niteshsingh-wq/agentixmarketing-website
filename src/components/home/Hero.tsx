@@ -31,20 +31,38 @@ function HeroStats() {
 function HeroLeadForm() {
   const [d, setD] = useState({ name: '', email: '', phone: '', website: '', goal: 'Store design / build' })
   const [sent, setSent] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
   const set = (k: string, v: string) => setD(s => ({ ...s, [k]: v }))
   const valid = d.name.trim() !== '' && /\S+@\S+\.\S+/.test(d.email)
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!valid) return
+    if (!valid || submitting) return
+    setSubmitting(true)
+    setError('')
     try {
-      await fetch('/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...d, sourcePage: '/' }),
       })
-    } catch {}
-    setSent(true)
+      // Only confirm once the API says the lead was saved.
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        setError(
+          res.status === 429
+            ? 'Too many requests from this connection. Please wait a few minutes and try again.'
+            : body.error || 'Something went wrong. Please email connect@agentixmarketing.com directly.'
+        )
+        setSubmitting(false)
+        return
+      }
+      setSent(true)
+    } catch {
+      setError('Network error. Please check your connection, or email connect@agentixmarketing.com directly.')
+    }
+    setSubmitting(false)
   }
 
   if (sent) {
@@ -97,6 +115,9 @@ function HeroLeadForm() {
           <option value="Not sure yet">Not sure yet</option>
         </select>
       </div>
+      {error && (
+        <p role="alert" style={{ marginTop: 14, color: '#e5484d', fontSize: 14 }}>{error}</p>
+      )}
       <button className="btn btn-primary" type="submit"
         style={{ marginTop: 18, width: '100%', justifyContent: 'center', opacity: valid ? 1 : 0.5 }}>
         Get my plan <Arrow />

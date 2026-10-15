@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateContent } from '../../lib/revalidate.ts'
 
 export const Services: CollectionConfig = {
   slug: 'services',
@@ -60,5 +61,26 @@ export const Services: CollectionConfig = {
       ],
     },
   ],
+  hooks: {
+    // Keep the cached service pages and the sitemap in sync with the CMS.
+    // Awaited, not fire-and-forget: on serverless the function can be frozen
+    // as soon as the response is returned, so a floating promise here would
+    // often never run and the cached page would go stale until the 1h backstop.
+    afterChange: [
+      async ({ doc, previousDoc }) => {
+        await revalidateContent('services', doc?.slug)
+        // A slug change leaves the old URL cached — invalidate it too so it
+        // 404s (or falls back to static data) instead of serving stale content.
+        if (previousDoc?.slug && previousDoc.slug !== doc?.slug) {
+          await revalidateContent('services', previousDoc.slug)
+        }
+      },
+    ],
+    afterDelete: [
+      async ({ doc }) => {
+        await revalidateContent('services', doc?.slug)
+      },
+    ],
+  },
   timestamps: true,
 }

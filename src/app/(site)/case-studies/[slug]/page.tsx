@@ -13,8 +13,19 @@ import { CaseStudyHeroCtas } from '@/components/case-studies/CaseStudyHeroCtas'
 import { getCaseStudy, getAllCaseStudySlugs, CASE_STUDIES, type CaseStudy } from '@/data/case-studies'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { getCaseStudyEntries, handlePayloadReadError, staticFallbackEnabled } from '@/lib/content'
 
-export const dynamic = 'force-dynamic'
+/**
+ * ISR — see services/[slug]. Invalidated on demand by the CaseStudies
+ * collection's afterChange/afterDelete hooks.
+ */
+export const revalidate = 3600
+
+/** Prerender every known case study — see services/[slug] for rationale. */
+export async function generateStaticParams() {
+  const entries = await getCaseStudyEntries()
+  return entries.map(e => ({ slug: e.slug }))
+}
 
 function payloadToCaseStudy(doc: any): CaseStudy {
   return {
@@ -39,17 +50,19 @@ async function fetchCaseStudy(slug: string): Promise<CaseStudy | null> {
     const { docs } = await payload.find({ collection: 'case-studies', where: { slug: { equals: slug } }, limit: 1 })
     if (docs.length > 0) return payloadToCaseStudy(docs[0])
   } catch (e) {
-    console.error('[case-study] Payload fetch failed, using static data:', e)
+    handlePayloadReadError(`case study ${slug}`, e)
   }
-  return getCaseStudy(slug)
+  return staticFallbackEnabled() ? getCaseStudy(slug) : null
 }
 
 async function fetchAllCaseStudies(): Promise<CaseStudy[]> {
   try {
     const payload = await getPayload({ config })
     const { docs } = await payload.find({ collection: 'case-studies', limit: 100 })
-    if (docs.length > 0) return docs.map(payloadToCaseStudy)
-  } catch {}
+    if (docs.length > 0 || !staticFallbackEnabled()) return docs.map(payloadToCaseStudy)
+  } catch (e) {
+    handlePayloadReadError('case studies (related)', e)
+  }
   return CASE_STUDIES
 }
 

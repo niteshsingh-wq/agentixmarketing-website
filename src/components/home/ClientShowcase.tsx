@@ -3,6 +3,7 @@ import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { CASE_STUDIES } from '@/data/case-studies'
+import { handlePayloadReadError, staticFallbackEnabled } from '@/lib/content'
 
 async function fetchShowcaseCases() {
   try {
@@ -12,14 +13,16 @@ async function fetchShowcaseCases() {
       limit: 6,
       select: { slug: true, client: true, industry: true, result: true, desc: true },
     })
-    if (docs.length > 0) return docs.map((d: any) => ({
+    if (docs.length > 0 || !staticFallbackEnabled()) return docs.map((d: any) => ({
       slug: d.slug,
       name: d.client,
       industry: d.industry || '',
       result: d.result || '',
       blurb: d.desc || '',
     }))
-  } catch {}
+  } catch (e) {
+    handlePayloadReadError('homepage case studies', e)
+  }
   return CASE_STUDIES.slice(0, 6).map(cs => ({
     slug: cs.slug,
     name: cs.client,

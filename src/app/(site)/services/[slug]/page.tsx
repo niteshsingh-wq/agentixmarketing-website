@@ -7,8 +7,29 @@ import { SITE_URL } from '@/lib/site'
 import { ServicePage } from '@/components/services/ServicePage'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { getServiceEntries, handlePayloadReadError, staticFallbackEnabled } from '@/lib/content'
 
-export const dynamic = 'force-dynamic'
+/**
+ * ISR. These are the primary SEO landing pages — serving them uncached meant
+ * a Neon query on every crawl and every visit, and a
+ * `private, no-cache, no-store` response that the CDN could not keep.
+ *
+ * Content edits invalidate this page immediately via the Services collection's
+ * afterChange hook (src/lib/revalidate.ts); the interval is just a backstop.
+ */
+export const revalidate = 3600
+
+/**
+ * Prerender every known service at build time so the CDN can serve them.
+ * Without this, a dynamic segment is rendered on demand for every request and
+ * never cached. `dynamicParams` stays at its default (true), so a service
+ * added in Payload after a deploy still renders — it is just generated on
+ * first request and cached from then on.
+ */
+export async function generateStaticParams() {
+  const entries = await getServiceEntries()
+  return entries.map(e => ({ slug: e.slug }))
+}
 
 function payloadToService(doc: any): Service {
   return {
@@ -33,9 +54,9 @@ async function fetchService(slug: string): Promise<Service | null> {
     const { docs } = await payload.find({ collection: 'services', where: { slug: { equals: slug } }, limit: 1 })
     if (docs.length > 0) return payloadToService(docs[0])
   } catch (e) {
-    console.error('[service] Payload fetch failed, using static data:', e)
+    handlePayloadReadError(`service ${slug}`, e)
   }
-  return getService(slug) ?? null
+  return staticFallbackEnabled() ? getService(slug) ?? null : null
 }
 
 export async function generateMetadata(

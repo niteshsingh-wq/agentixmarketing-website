@@ -11,6 +11,7 @@ export function ContactForm() {
   const [data, setData] = useState<FormData>({ name: '', email: '', phone: '', website: '', need: '', message: '', company: '' })
   const [sent, setSent] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
   const set = (k: keyof FormData, v: string) => setData(d => ({ ...d, [k]: v }))
   const valid = data.name.trim() !== '' && /\S+@\S+\.\S+/.test(data.email) && data.need !== ''
 
@@ -19,15 +20,31 @@ export function ContactForm() {
     if (data.company) return // honeypot
     if (!valid) return
     setSubmitting(true)
+    setError('')
     try {
-      await fetch('/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, sourcePage: '/contact' }),
       })
-    } catch {}
+      // Previously the status was ignored and success was shown
+      // unconditionally — a rate-limited or failed submission looked
+      // identical to a delivered one.
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        setError(
+          res.status === 429
+            ? 'Too many messages from this connection. Please wait a few minutes and try again.'
+            : body.error || 'Something went wrong. Please email connect@agentixmarketing.com directly.'
+        )
+        setSubmitting(false)
+        return
+      }
+      setSent(true)
+    } catch {
+      setError('Network error. Please check your connection, or email connect@agentixmarketing.com directly.')
+    }
     setSubmitting(false)
-    setSent(true)
   }
 
   if (sent) {
@@ -92,6 +109,9 @@ export function ContactForm() {
         <textarea rows={4} value={data.message} onChange={e => set('message', e.target.value)}
           placeholder="A few sentences on your store, goals or timeline…" />
       </div>
+      {error && (
+        <p className="cf-hint" role="alert" style={{ marginTop: 18, color: '#e5484d' }}>{error}</p>
+      )}
       <button className="btn btn-primary" type="submit" disabled={!valid || submitting}
         style={{ marginTop: 22, opacity: valid ? 1 : 0.45, pointerEvents: valid ? 'auto' : 'none' }}>
         {submitting ? 'Sending…' : 'Send message'} <Arrow />

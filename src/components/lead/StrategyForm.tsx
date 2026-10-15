@@ -25,6 +25,7 @@ export function StrategyForm({ onDone }: { onDone: () => void }) {
   const [data, setData] = useState<FormData>({ goal: '', stage: '', budget: 7, name: '', email: '', phone: '', website: '' })
   const [done, setDone] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   const set = (k: keyof FormData, v: string | number) => setData(d => ({ ...d, [k]: v }))
   const cur = FORM_STEPS[step]
@@ -38,15 +39,29 @@ export function StrategyForm({ onDone }: { onDone: () => void }) {
   const next = async () => {
     if (step < FORM_STEPS.length - 1) { setStep(step + 1); return }
     setSubmitting(true)
+    setError('')
     try {
-      await fetch('/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, budget: budgetLabel(data.budget), sourcePage: window.location.pathname }),
       })
-    } catch {}
+      // Only confirm once the API says the lead was saved.
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        setError(
+          res.status === 429
+            ? 'Too many requests from this connection. Please wait a few minutes and try again.'
+            : body.error || 'Something went wrong. Please email connect@agentixmarketing.com directly.'
+        )
+        setSubmitting(false)
+        return
+      }
+      setDone(true)
+    } catch {
+      setError('Network error. Please check your connection, or email connect@agentixmarketing.com directly.')
+    }
     setSubmitting(false)
-    setDone(true)
   }
 
   if (done) {
@@ -117,6 +132,9 @@ export function StrategyForm({ onDone }: { onDone: () => void }) {
         )}
       </div>
 
+      {error && (
+        <p role="alert" style={{ marginTop: 16, color: '#e5484d', fontSize: 14 }}>{error}</p>
+      )}
       <div className="lead-actions">
         <button className="lead-back" disabled={step === 0} onClick={() => setStep(step - 1)}>← Back</button>
         <button className="btn btn-primary lead-next" disabled={!canNext() || submitting}

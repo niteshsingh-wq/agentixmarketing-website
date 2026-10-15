@@ -1,5 +1,5 @@
-# dependencies
-/node_modules
+# dependencies — unanchored so nested copies (e.g. src/node_modules) match too
+node_modules/
 
 # next.js — Vercel builds this, never commit
 /.next/

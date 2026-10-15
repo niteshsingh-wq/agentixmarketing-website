@@ -47,6 +47,11 @@ export default buildConfig({
   ],
 
   db: postgresAdapter({
+    // Never let `next dev` push schema changes straight into the database.
+    // Pointed at Neon, dev push would alter (or offer to drop) production
+    // tables, including the migration-only rate_limits table. Schema changes
+    // go through `pnpm payload migrate:create` and committed migrations only.
+    push: false,
     pool: {
       connectionString: process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL,
     },

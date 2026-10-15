@@ -2,7 +2,7 @@ const TEAMS_WEBHOOK_URL = process.env.TEAMS_WEBHOOK_URL
 
 export async function notifyTeamsNewLead(fields: Record<string, string>) {
   if (!TEAMS_WEBHOOK_URL) {
-    console.log('[teams] Webhook URL not set — skipping notification')
+    console.warn('[teams] NOT CONFIGURED — notification skipped. Missing env var: TEAMS_WEBHOOK_URL')
     return
   }
 
